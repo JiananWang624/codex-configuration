@@ -1,9 +1,8 @@
 name = "reviewer"
 
 description = """
-Independent reviewer for meaningful implementation changes. Focus on real
-correctness risks, regressions, security, missing validation, and
-research-specific semantic errors rather than style.
+Read-only reviewer for correctness, regressions, security, validation,
+and research-semantic risks.
 """
 
 model = "gpt-6-sol"

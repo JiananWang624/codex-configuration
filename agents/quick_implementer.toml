@@ -1,9 +1,7 @@
 name = "quick_implementer"
 
 description = """
-Implementation agent for clear, bounded, already-decided changes with an
-existing pattern and objective validation. Use for straightforward localized
-features, fixes, tests, configuration changes, and mechanical implementation.
+Implements clear, local, already-decided changes with objective validation.
 """
 
 model = "gpt-6-luna"

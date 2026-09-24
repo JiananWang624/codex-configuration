@@ -1,10 +1,8 @@
 name = "scout"
 
 description = """
-Read-only investigator for targeted repository exploration, code mapping,
-documentation lookup, configuration inspection, logs, and diagnostic evidence.
-Use when exploration would otherwise add substantial noise to the primary
-context.
+Read-only investigator for targeted repository exploration, code paths,
+documentation, configuration, logs, and diagnostic evidence.
 """
 
 model = "gpt-6-luna"

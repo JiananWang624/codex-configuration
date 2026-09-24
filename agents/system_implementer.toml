@@ -1,9 +1,8 @@
 name = "system_implementer"
 
 description = """
-Implementation agent for already-approved work that crosses interacting
-modules, involves state or integration behavior, follows indirect execution
-paths, or requires broader repository understanding before editing.
+Implements approved changes spanning interacting modules, state, integration,
+or indirect execution paths.
 """
 
 model = "gpt-6-sol"

@@ -1,9 +1,7 @@
 name = "debugger"
 
 description = """
-Diagnostic agent for non-obvious test failures, runtime errors, regressions,
-unexpected behavior, numerical issues, and integration failures. Establish
-evidence and root cause before implementation changes are made.
+Diagnoses non-obvious failures and establishes root cause from evidence.
 """
 
 model = "gpt-6-sol"
