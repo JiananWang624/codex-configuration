@@ -14,7 +14,7 @@ When reproducing or comparing against a paper, preserve the reference implementa
 
 ## Efficiency
 
-Use effort proportionate to the change. Once sufficient evidence satisfies the task's stated or directly implied acceptance criteria, stop.
+Use effort proportionate to the change.
 
 Escalate testing, review, investigation, or subagent use only for a concrete unresolved risk.
 
@@ -28,7 +28,7 @@ Prefer simple direct code over abstractions used only once. Add comments only wh
 
 Keep one authoritative implementation path for the same production behavior. Parallel implementations are allowed when intentionally retained as research baselines, ablations, paper variants, comparison methods, or reproducibility references.
 
-When replacing production behavior, validate the replacement and remove the obsolete path and its unused code, wiring, configuration, dependencies, and consumers. Do not remove intentionally retained research variants.
+When the requested change intentionally replaces production behavior, validate the replacement and remove only obsolete code, wiring, configuration, dependencies, or consumers made unnecessary by that replacement. Keep unrelated cleanup out of scope. Do not remove intentionally retained research variants.
 
 If the selected implementation cannot operate correctly, fail clearly with actionable diagnostics rather than silently falling back.
 
@@ -36,7 +36,7 @@ If the selected implementation cannot operate correctly, fail clearly with actio
 
 For explanation, review, diagnosis, or planning requests, inspect and report without modifying files.
 
-For implementation, fix, or build requests, make the in-scope change and run only the smallest sufficient non-destructive validation without asking first.
+For implementation, fix, or build requests, make the in-scope change and perform the applicable non-destructive validation without asking first.
 
 Ask only when a missing decision materially changes the result or when an action is destructive, external, privileged, costly, or otherwise requires approval.
 
