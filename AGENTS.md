@@ -75,6 +75,22 @@ When the conditions below are met, this AGENTS.md explicitly authorizes and inst
 
 The primary agent owns planning, architecture, scientific and algorithmic decisions, ambiguity resolution, orchestration, and final acceptance.
 
+Delegate only when context isolation, specialization, or genuinely
+independent work provides enough benefit to justify the additional agent
+and token cost.
+
+When delegating bounded work, give the subagent a self-contained task that
+includes the objective, already-decided constraints, relevant files or
+symbols when known, acceptance criteria, and required validation.
+
+Prefer minimal parent-history inheritance. Use `fork_turns="none"` for
+self-contained tasks by default, a small positive number when recent parent
+turns materially help, and `"all"` only when the complete parent history is
+genuinely necessary.
+
+Subagents must not spawn further subagents unless the primary agent
+explicitly delegates that authority.
+
 Give `scout` and `quick_implementer` only clearly bounded tasks that do not require scientific or architectural decisions.
 
 During Plan mode, subagents may investigate, but do not begin source implementation until planning is complete and execution starts.
@@ -84,12 +100,19 @@ Use `scout` for read-heavy repository investigation, code mapping, documentation
 For implementation:
 
 * Use `quick_implementer` for clear, local, already-decided changes that follow an existing pattern and have objective validation.
-* Use `system_implementer` for already-approved work that spans interacting modules or requires broader subsystem understanding.
-* If implementation requires a new architectural, algorithmic, experimental, or scientifically meaningful decision, escalate it to the primary agent.
+* Use `system_implementer` for substantial, already-approved implementation that can be expressed as a self-contained implementation contract and where isolating implementation context from the primary agent is beneficial. This commonly includes interacting modules, integration paths, or substantial implementation and validation work.
+* Keep implementation in the primary agent when it remains tightly coupled to unresolved architectural, algorithmic, experimental, or scientifically meaningful decisions.
 
 For trivial edits, the primary agent may implement directly.
 
-If `quick_implementer` discovers that the task is broader than expected, stop and escalate to `system_implementer` rather than repeatedly retrying.
+If `quick_implementer` discovers that the task is broader than expected,
+stop and escalate to the primary agent. The primary agent decides whether
+to handle the work directly or delegate it to `system_implementer`.
+
+For closely related follow-up work, reuse the existing subagent when its
+context remains relevant rather than spawning a replacement. Spawn a new
+agent for independent work, a different role, or when a clean context is
+beneficial.
 
 Use `reviewer` only when a specific residual risk is not adequately covered by existing validation. Do not use review as a default gate for non-trivial changes, and do not repeat already-successful tests without a concrete reason.
 

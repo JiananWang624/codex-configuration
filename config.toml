@@ -3,14 +3,14 @@
 # Primary model
 # ============================================================
 
-model = "gpt-6-sol"
+model = "gpt-6.1-sol"
 model_reasoning_effort = "medium"
 
 # Keep interactive planning on the strong primary model.
 plan_mode_reasoning_effort = "high"
 
 # Model used by manual /review.
-review_model = "gpt-6-sol"
+review_model = "gpt-6.1-sol"
 service_tier = "default"
 
 # ============================================================
@@ -22,7 +22,7 @@ enabled = true
 
 # Safe fallback for unnamed or generic spawned agents.
 # Named custom agents below override these settings.
-default_subagent_model = "gpt-6-sol"
+default_subagent_model = "gpt-6.1-sol"
 default_subagent_reasoning_effort = "medium"
 
 # Prefer serial execution. A second slot exists only for genuinely
@@ -73,6 +73,9 @@ enabled = false
 
 [features]
 js_repl = false
+
+[features.multi_agent_v2]
+enabled = true
 
 [mcp_servers.node_repl]
 command = 'C:\Users\jianan\AppData\Local\OpenAI\Codex\runtimes\cua_node\415ffebf3d576e9b\bin\node_repl.exe'
