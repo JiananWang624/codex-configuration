@@ -29,35 +29,6 @@ default_subagent_reasoning_effort = "medium"
 # independent investigations or hypotheses.
 max_concurrent_threads_per_session = 2
 
-[projects.'d:\files\temp\icra template']
-trust_level = "trusted"
-
-[projects.'d:\files\temp\opensim']
-trust_level = "trusted"
-
-[projects.'f:\data_collection_pipeline\python_recorder']
-trust_level = "trusted"
-
-[projects.'f:\code\motive_annotator_v3_1_windows']
-trust_level = "trusted"
-
-[projects.'f:\code\optitrack_data_preprecessing']
-trust_level = "trusted"
-
-[projects.'f:\code\sew_mimic_repro']
-trust_level = "trusted"
-
-[projects.'c:\users\jianan\.codex']
-trust_level = "trusted"
-
-[projects.'c:\users\jianan\.codex\skills']
-trust_level = "trusted"
-
-[projects.'f:\code\feeding_coordination']
-trust_level = "trusted"
-
-[projects.'f:\code\feeding_data_analysis']
-trust_level = "trusted"
 
 [windows]
 sandbox = "elevated"
