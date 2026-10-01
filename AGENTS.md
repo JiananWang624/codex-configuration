@@ -79,14 +79,17 @@ Delegate only when context isolation, specialization, or genuinely
 independent work provides enough benefit to justify the additional agent
 and token cost.
 
-When delegating bounded work, give the subagent a self-contained task that
-includes the objective, already-decided constraints, relevant files or
-symbols when known, acceptance criteria, and required validation.
+Prefer minimal parent-history inheritance. When spawning a named subagent,
+set `fork_turns` explicitly rather than relying on the default.
 
-Prefer minimal parent-history inheritance. Use `fork_turns="none"` for
-self-contained tasks by default, a small positive number when recent parent
-turns materially help, and `"all"` only when the complete parent history is
-genuinely necessary.
+Use `fork_turns="none"` for self-contained tasks by default, a small positive
+number when recent parent turns materially help, and `"all"` only when the
+complete parent history is genuinely necessary.
+
+When using `fork_turns="none"` or limited history, give the subagent a
+self-contained task containing the objective, already-decided constraints,
+relevant files or symbols when known, acceptance criteria, and required
+validation.
 
 Subagents must not spawn further subagents unless the primary agent
 explicitly delegates that authority.
@@ -109,10 +112,11 @@ If `quick_implementer` discovers that the task is broader than expected,
 stop and escalate to the primary agent. The primary agent decides whether
 to handle the work directly or delegate it to `system_implementer`.
 
-For closely related follow-up work, reuse the existing subagent when its
-context remains relevant rather than spawning a replacement. Spawn a new
-agent for independent work, a different role, or when a clean context is
-beneficial.
+For closely related follow-up work, prefer `followup_task` on the existing
+subagent when its context remains relevant rather than spawning a replacement.
+
+Spawn a new agent for independent work, a different role, or when a clean
+context is beneficial.
 
 Use `reviewer` only when a specific residual risk is not adequately covered by existing validation. Do not use review as a default gate for non-trivial changes, and do not repeat already-successful tests without a concrete reason.
 
