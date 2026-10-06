@@ -33,77 +33,11 @@ max_concurrent_threads_per_session = 2
 [windows]
 sandbox = "elevated"
 
-[marketplaces.openai-bundled]
-source_type = "local"
-source = '\\?\C:\Users\jianan\.codex\.tmp\bundled-marketplaces\openai-bundled'
-
-[marketplaces.openai-primary-runtime]
-source_type = "local"
-source = '\\?\C:\Users\jianan\.cache\codex-runtimes\codex-primary-runtime\plugins\openai-primary-runtime'
-
-[plugins."browser@openai-bundled"]
-enabled = true
-
-[plugins."documents@openai-primary-runtime"]
-enabled = false
-
-[plugins."pdf@openai-primary-runtime"]
-enabled = true
-
-[plugins."spreadsheets@openai-primary-runtime"]
-enabled = false
-
-[plugins."presentations@openai-primary-runtime"]
-enabled = false
-
-[plugins."codex-app-tools@openai-bundled"]
-enabled = true
-
-[plugins."sites@openai-bundled"]
-enabled = false
-
-[plugins."chrome@openai-bundled"]
-enabled = false
-
-[plugins."visualize@openai-bundled"]
-enabled = false
-
-[plugins."template-creator@openai-primary-runtime"]
-enabled = false
-
 [features]
 js_repl = false
 
 [features.multi_agent_v2]
 enabled = true
-
-[mcp_servers.node_repl]
-command = 'C:\Users\jianan\AppData\Local\OpenAI\Codex\runtimes\cua_node\415ffebf3d576e9b\bin\node_repl.exe'
-startup_timeout_sec = 120.0
-
-[mcp_servers.node_repl.env]
-BROWSER_USE_AVAILABLE_BACKENDS = "chrome,iab"
-BROWSER_USE_CODEX_APP_BUILD_FLAVOR = "prod"
-BROWSER_USE_CODEX_APP_VERSION = "26.825.51511"
-BROWSER_USE_TINYSKY_ENABLED = "0"
-CODEX_CLI_PATH = 'C:\Users\jianan\AppData\Local\OpenAI\Codex\bin\b99306303521e97e\codex.exe'
-CODEX_HOME = 'C:\Users\jianan\.codex'
-NODE_REPL_INSTRUCTIONS_USE_CASE_BROWSER = "Control the in-app browser in conjunction with the Browser Plugin."
-NODE_REPL_INSTRUCTIONS_USE_CASE_CHROME = "Control the Chrome browser in conjunction with the Chrome Plugin. Prefer this method of controlling Chrome over alternatives (such as Computer Use) unless the user explicitly mentions an alternative."
-NODE_REPL_NATIVE_PIPE_CONNECT_TIMEOUT_MS = "1000"
-NODE_REPL_NODE_MODULE_DIRS = 'C:\Users\jianan\AppData\Local\OpenAI\Codex\runtimes\cua_node\415ffebf3d576e9b\bin\node_modules'
-NODE_REPL_NODE_PATH = 'C:\Users\jianan\AppData\Local\OpenAI\Codex\runtimes\cua_node\415ffebf3d576e9b\bin\node.exe'
-NODE_REPL_TRUSTED_CODE_PATHS = 'C:\Users\jianan\.codex;C:\Users\jianan\AppData\Local\OpenAI\Codex\runtimes\cua_node\415ffebf3d576e9b\bin\node_modules'
-NODE_REPL_TRUSTED_SERVICES = '{"browser":"C:/Users/jianan/.codex/plugins/cache/openai-bundled/browser/26.825.51511/scripts/browser-service.mjs","sky":"@oai/sky/service"}'
-SKY_CUA_NATIVE_PIPE = "1"
-SKY_CUA_NATIVE_PIPE_DIRECTORY = '\\.\pipe\codex-computer-use-500d00ed-8a4b-44d5-bbe6-b1763b18916e'
-
-[mcp_servers.cua_repl]
-command = 'C:\Program Files\WindowsApps\OpenAI.Codex_26.825.6671.0_x64__2p2nqsd0c76g0\app\ChatGPT.exe'
-enabled = false
-
-[mcp_servers.notion]
-url = "https://mcp.notion.com/mcp"
 
 [desktop]
 conversationDetailMode = "STEPS_PROSE"

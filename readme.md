@@ -4,7 +4,7 @@
 
 ## 文件说明
 
-- [config.toml](config.toml)：主模型、推理强度、子代理并发及本地工具配置。
+- [config.toml](config.toml)：主模型、推理强度、子代理并发及通用偏好设置。
 - [AGENTS.md](AGENTS.md)：最小修改、研究语义保护、验证和委派规则。
 - [agents/](agents/)：各子代理的模型、权限与职责边界。
 
@@ -30,4 +30,4 @@
 - **验证与风险匹配**：执行最小但足够的测试、构建或烟雾检查，不默认运行全套测试；仅在存在具体未解决风险时增加审查。节省额度不能替代正确性验证，实际节省效果需结合使用情况评估。
 - **控制实验成本**：小型定向测试可自动执行；昂贵训练、大规模仿真、多种子实验、参数扫描、大量下载和真实硬件操作需明确授权。
 
-这是个人研究工作流的配置记录。`config.toml` 包含本机 Windows 路径、插件和 MCP 设置，其他人复用时应按自己的环境调整。子代理配置机制可参考 [OpenAI 官方文档](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
+这是一套可供参考的研究工作流通用配置。`config.toml` 已移除个人 MCP、本机绝对路径，以及依赖本机安装位置的插件市场和插件配置。需要使用 MCP 或插件时，请在自己的环境中单独配置；`[windows]` 为 Windows 专用设置，其他系统可省略。子代理配置机制可参考 [OpenAI 官方文档](https://learn.chatgpt.com/docs/agent-configuration/subagents)。
