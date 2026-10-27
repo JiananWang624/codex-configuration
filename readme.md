@@ -1,6 +1,6 @@
 # 面向 CS / Robotics 研究的 Codex 配置
 
-这套配置来自一名计算机科学与机器人方向的 PhD 学生，日常用于论文复现、实验代码开发和调试。目标是在优先保证代码正确性与研究可复现性的前提下，保持代码干净、简洁，并通过 GPT-6.1 Sol 与 GPT-6 Luna 的任务分工减少额度消耗。
+这套配置来自一名计算机科学与机器人方向的 PhD 学生，日常用于论文复现、实验代码开发和调试。目标是在优先保证代码正确性与研究可复现性的前提下，保持代码干净、简洁，并通过 GPT-6.1 Sol、GPT-6.1 Terra 与 GPT-6 Luna 的任务分工减少额度消耗。
 
 ## 文件说明
 
@@ -15,11 +15,13 @@
 | 主代理 | GPT-6.1 Sol / medium，Plan 模式 high | 规划、架构与科学决策、处理歧义、任务委派和最终验收 |
 | `scout` | GPT-6 Luna / high | 只读检索代码、配置、文档和日志，返回关键证据 |
 | `quick_implementer` | GPT-6 Luna / high | 实现已决定、范围明确的局部修改，执行针对性验证 |
-| `system_implementer` | GPT-6.1 Sol / medium | 按明确实现契约完成方案已确定、工作量较大且适合隔离实施上下文的任务，包括模块交互、集成路径和较大量的验证工作；发现证据与契约冲突时交回主代理 |
+| `system_implementer` | GPT-6.1 Terra / high | 按明确实现契约完成方案已确定、工作量较大且适合隔离实施上下文的任务，包括模块交互、集成路径和较大量的验证工作；发现证据与契约冲突时交回主代理 |
 | `debugger` | GPT-6.1 Sol / high | 复现非显然故障，先定位根因；修改代码需主代理明确委派 |
 | `reviewer` | GPT-6.1 Sol / high | 只读审查具体的正确性、回归或研究语义风险 |
 
 未指定角色的子代理默认使用 GPT-6.1 Sol / medium；手动 `/review` 使用 GPT-6.1 Sol。配置显式启用 Multi-Agent V2，并发上限保持为 2。Luna 不承担架构、算法或实验方法决策，任务超出边界时停止并交回主代理，由主代理决定直接处理或委派给 `system_implementer`。
+
+`system_implementer` 使用 Terra / high 的前提是主代理已明确方案、约束和验收标准。官方[模型选择指南](https://developers.openai.com/api/docs/guides/model-selection)建议将 Terra 用于范围明确、结果可验证的代码任务；复杂且有歧义的多步骤任务仍优先使用 Sol。此配置是基于职责边界的选型判断，尚未通过本项目的同任务模型对比验证。
 
 ## 配置思路
 
