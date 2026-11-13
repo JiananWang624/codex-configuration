@@ -16,7 +16,7 @@ When reproducing or comparing against a paper, preserve the reference implementa
 
 Use effort proportionate to the change.
 
-Escalate testing, review, investigation, or subagent use only for a concrete unresolved risk.
+Escalate testing, review, or investigation only for a concrete unresolved risk.
 
 ## Implementation
 
@@ -25,6 +25,8 @@ Keep changes local and minimal. Do not perform unrelated refactoring, renaming, 
 Avoid speculative abstractions and defensive complexity. Do not add wrappers, managers, factories, adapters, compatibility layers, feature flags, retries, fallback paths, or extra state unless required by the task or an evidenced failure mode.
 
 Prefer simple direct code over abstractions used only once. Add comments only when they explain why something is necessary.
+
+Preserve established module boundaries. Split code when responsibilities or actual reuse justify it; do not compress readable code or add files and layers merely to satisfy a structural convention.
 
 Keep one authoritative implementation path for the same production behavior. Parallel implementations are allowed when intentionally retained as research baselines, ablations, paper variants, comparison methods, or reproducibility references.
 
@@ -52,6 +54,16 @@ If such a choice is ambiguous or could materially affect experimental results, d
 
 Do not launch expensive training, large simulations, multi-seed experiments, hyperparameter sweeps, large downloads, or real-hardware actions without explicit approval. Small targeted tests and smoke tests may run automatically.
 
+Keep resource budgets in project guidance or the task agreement. Proceed within explicitly authorized scope and budget; ask before expanding either.
+
+## Documentation and handoff
+
+Reuse existing records. Update them only for material decisions, meaningful experiment results or failures, or handoff of ongoing work. Do not create records for routine tasks or impose a fixed document structure.
+
+Record what another agent needs to continue without the chat: goal and current status, changes from baseline, key decisions and reasons, exact rerun or resume steps, evidence, unresolved issues, and the next action. Include code state (including relevant uncommitted changes), environment, data, effective configuration, seeds, units, and evaluation details only when they affect reproduction or interpretation. Reference existing artifacts rather than copying them. Distinguish observations, inferences, and unverified claims.
+
+Maintain one authoritative source for each fact or result. Update current status while preserving useful experiment history, and explicitly correct superseded conclusions. For ongoing runs, record the host, job identifier, output location, and last confirmed status when needed to prevent duplicate work.
+
 ## Validation
 
 Run the smallest sufficient validation for the affected behavior. Prefer focused tests, targeted builds, static checks, and smoke tests over broad project-wide validation.
@@ -59,6 +71,8 @@ Run the smallest sufficient validation for the affected behavior. Prefer focused
 Do not run the full test suite by default. Use broader validation only when the change has broad impact, narrower checks are insufficient, targeted validation reveals wider risk, or the task explicitly reaches a final integration/release regression stage.
 
 Do not repeat tests or benchmarks that already produced valid inspected evidence unless relevant code changed or a concrete coverage gap was identified.
+
+When numerical behavior changes, use a relevant reference comparison or invariant check with project-defined tolerances; successful execution alone does not establish scientific correctness.
 
 After validation, inspect the final diff once. Once the acceptance criteria are satisfied, proceed or finish; do not add extra validation or review solely for additional confidence.
 
@@ -79,17 +93,9 @@ Delegate only when context isolation, specialization, or genuinely
 independent work provides enough benefit to justify the additional agent
 and token cost.
 
-Prefer minimal parent-history inheritance. When spawning a named subagent,
-set `fork_turns` explicitly rather than relying on the default.
+Prefer minimal parent-history inheritance using options supported by the active tool. When `fork_turns` is available, set it explicitly: use `"none"` for self-contained tasks and `"all"` only when complete parent history is necessary. Use limited-history options only if the tool supports them.
 
-Use `fork_turns="none"` for self-contained tasks by default, a small positive
-number when recent parent turns materially help, and `"all"` only when the
-complete parent history is genuinely necessary.
-
-When using `fork_turns="none"` or limited history, give the subagent a
-self-contained task containing the objective, already-decided constraints,
-relevant files or symbols when known, acceptance criteria, and required
-validation.
+Give each delegated task the objective, already-decided constraints, relevant files or symbols, acceptance criteria, and required validation. Make tasks without inherited context self-contained.
 
 Subagents must not spawn further subagents unless the primary agent
 explicitly delegates that authority.
@@ -112,8 +118,7 @@ If `quick_implementer` discovers that the task is broader than expected,
 stop and escalate to the primary agent. The primary agent decides whether
 to handle the work directly or delegate it to `system_implementer`.
 
-For closely related follow-up work, prefer `followup_task` on the existing
-subagent when its context remains relevant rather than spawning a replacement.
+For closely related follow-up work, reuse the existing subagent through the active tool's follow-up mechanism when its context remains relevant rather than spawning a replacement.
 
 Spawn a new agent for independent work, a different role, or when a clean
 context is beneficial.
@@ -124,4 +129,4 @@ Use `debugger` for non-obvious failures or unexplained behavior. Reproduce the i
 
 Prefer one active subagent at a time. Use a second only for genuinely independent investigations or hypotheses. Do not run overlapping implementation agents concurrently, and use at most two subagents unless explicitly justified.
 
-Subagents should return concise findings rather than raw logs. The primary agent synthesizes their findings and decides final acceptance.
+Subagents should return concise findings or changes, evidence or validation, and remaining issues rather than raw logs. The primary agent synthesizes their findings, decides final acceptance, and integrates durable records when warranted. Subagents should not independently maintain shared status documents unless assigned that responsibility.

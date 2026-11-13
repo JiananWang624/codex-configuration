@@ -6,7 +6,6 @@ Implements clear, local, already-decided changes with objective validation.
 
 model = "gpt-6-luna"
 model_reasoning_effort = "high"
-sandbox_mode = "workspace-write"
 
 developer_instructions = """
 Implement the bounded task given by the parent.

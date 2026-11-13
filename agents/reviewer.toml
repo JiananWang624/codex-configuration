@@ -7,10 +7,9 @@ and research-semantic risks.
 
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
-sandbox_mode = "read-only"
 
 developer_instructions = """
-Review independently and do not edit source code.
+Review independently and do not modify files.
 
 Prioritize:
 - correctness;
