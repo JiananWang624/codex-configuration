@@ -7,7 +7,7 @@ A personal Codex setup developed by a PhD student in computer science and roboti
 ## Files
 
 - [config.toml](config.toml): Default model, reasoning effort, subagent concurrency, and client preferences.
-- [AGENTS.md](AGENTS.md): Rules for minimal changes, research correctness, concise records, validation, and delegation.
+- [AGENTS.md](AGENTS.md): Rules for minimal changes, research correctness, targeted retrieval, documentation and handoff, validation, and delegation.
 - [agents/](agents/): Model settings and responsibilities for each custom agent. Permissions are inherited from the parent session.
 
 ## Models and responsibilities
@@ -36,7 +36,9 @@ Terra / high is used only after the primary agent has defined the approach, cons
 
 ## Experiment records and handoff
 
-Reuse and update existing records as needed, keeping only what another agent needs to understand the current state, locate evidence, and continue the work. No fixed template or extra files are required. The authoritative rules are in [Documentation and handoff](AGENTS.md#documentation-and-handoff).
+Global guidance defines documentation and on-demand reading principles; each project supplies its paths, commands, experiment protocols, and budgets. Use project guidance, READMEs, or existing indexes to locate relevant sections, batch independent lookups within that scope, and expand as evidence requires.
+
+Reuse existing records, with searchable entries linking to authoritative procedures and evidence. Keep current-state summaries short, state applicability, validation status, and supersession, and link experimental results to the code, configuration, and protocol versions used. Add indexes or split documents only when navigation requires it; no fixed template or routine reports are required. The authoritative rules are in [Documentation and handoff](AGENTS.md#documentation-and-handoff).
 
 ## Installation and verification
 

@@ -4,7 +4,7 @@
 
 Prefer the smallest correct implementation that fully solves the requested task.
 
-Start with targeted searches. Read only the code, configuration, tests, documentation, and dependencies needed for the task.
+Start with targeted searches. When project context is needed, use existing project guidance, READMEs, or indexes to locate relevant material. Read only task-relevant code, configuration, tests, documentation, and dependencies, starting with relevant sections. Batch independent lookups within that scope; expand as evidence requires.
 
 Reuse existing code and dependencies before adding new code, files, abstractions, configuration, or dependencies.
 
@@ -58,11 +58,11 @@ Keep resource budgets in project guidance or the task agreement. Proceed within 
 
 ## Documentation and handoff
 
-Reuse existing records. Update them only for material decisions, meaningful experiment results or failures, or handoff of ongoing work. Do not create records for routine tasks or impose a fixed document structure.
+Reuse existing records. Update them only for material decisions, meaningful experiment results or failures, or handoff. Keep entry points and links current for documents added, moved, or changed by the task. Use searchable headings, keywords or existing identifiers, and concise entries linking to procedures and evidence. Add an index or split documents only when navigation requires it; do not create routine records or impose a fixed layout.
 
-Record what another agent needs to continue without the chat: goal and current status, changes from baseline, key decisions and reasons, exact rerun or resume steps, evidence, unresolved issues, and the next action. Include code state (including relevant uncommitted changes), environment, data, effective configuration, seeds, units, and evaluation details only when they affect reproduction or interpretation. Reference existing artifacts rather than copying them. Distinguish observations, inferences, and unverified claims.
+Maintain one authoritative source per fact, result, or maintained procedure. Keep current-state summaries short, with key conclusions, open issues, and the next action; link to details, history, and evidence instead of copying them. State applicability and validation status. Distinguish observations, inferences, and unverified claims. Mark superseded conclusions and link to replacements while preserving their original context.
 
-Maintain one authoritative source for each fact or result. Update current status while preserving useful experiment history, and explicitly correct superseded conclusions. For ongoing runs, record the host, job identifier, output location, and last confirmed status when needed to prevent duplicate work.
+Record what another agent needs to continue without the chat: goal, changes from baseline, decisions and reasons, exact rerun or resume steps, and evidence. Include code state and relevant uncommitted changes, environment, data, effective configuration, seeds, units, and evaluation details when they affect reproduction or interpretation. Link experimental results to the code, configuration, and protocol versions used. For ongoing runs, record the host, job identifier, output location, and last confirmed status when needed to prevent duplicate work.
 
 ## Validation
 
