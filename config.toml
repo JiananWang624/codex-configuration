@@ -18,23 +18,19 @@ service_tier = "default"
 # ============================================================
 
 [agents]
-enabled = true
 
 # Safe fallback for unnamed or generic spawned agents.
-# Named custom agents below override these settings.
+# Named custom agent files override these settings.
 default_subagent_model = "gpt-6.1-sol"
 default_subagent_reasoning_effort = "medium"
 
-# Prefer serial execution. A second slot exists only for genuinely
-# independent investigations or hypotheses.
+# Cap concurrently open spawned-agent threads, excluding the primary.
+# Normally use one; use the second only for genuinely independent work.
 max_concurrent_threads_per_session = 2
 
 
 [windows]
 sandbox = "elevated"
-
-[features]
-js_repl = false
 
 [features.multi_agent_v2]
 enabled = true

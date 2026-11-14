@@ -9,7 +9,7 @@ The goal is correct, reproducible research with clear project structure, concise
 ## Files
 
 - [config.toml](config.toml): Default model, reasoning effort, subagent concurrency, and client preferences.
-- [AGENTS.md](AGENTS.md): Authoritative rules for code, research, retrieval, documentation and handoff, validation, and delegation.
+- [AGENTS.md](AGENTS.md): Global baseline instructions, merged with project guidance.
 - [agents/](agents/): Each subagent's model and responsibilities; permissions are inherited from the parent session.
 
 ## Models and responsibilities
@@ -23,7 +23,7 @@ The goal is correct, reproducible research with clear project structure, concise
 | `debugger` | GPT-6.1 Sol / high | Reproduce non-obvious failures and establish root cause; edit code only when explicitly assigned a fix |
 | `reviewer` | GPT-6.1 Sol / high | Read-only review of specific correctness, regression, or research risks |
 
-Subagents without a custom role default to Sol / medium; manual `/review` uses Sol. Multi-Agent V2 is enabled, with at most two concurrent subagents, excluding the primary; normally use one. Luna agents return architectural, algorithmic, or experimental-method decisions to the primary agent.
+Subagents without a custom role default to Sol / medium; manual `/review` uses Sol. Multi-Agent V2 is enabled, with at most two concurrently open spawned-agent threads, excluding the primary; normally use one. Luna agents return architectural, algorithmic, or experimental-method decisions to the primary agent.
 
 Terra handles implementation after the approach, constraints, and acceptance criteria are defined; the primary agent can use Sol for complex integrations. This is a workflow default, not a same-task benchmark of suitability or savings. Adjust it based on quality, rework, and usage. See the [model selection guide](https://developers.openai.com/api/docs/guides/model-selection).
 
@@ -47,9 +47,9 @@ Reuse existing records and layouts. Add indexes or split documents only when nav
 
 ## Installation and verification
 
-This repository is a template. Opening it does not automatically load the root configuration as project settings.
+This repository is a template. Opening it does not automatically load the root `config.toml` as project settings. The root `AGENTS.md` does apply as project guidance and merges with global guidance; when editing this repository, its rules may duplicate an installed global copy.
 
-1. **Personal global use:** Merge or copy [config.toml](config.toml), [AGENTS.md](AGENTS.md), and [agents/](agents/) into your Codex home directory: `~/.codex/` by default, or the location set by `CODEX_HOME`. Preserve relative paths and existing personal settings.
+1. **Personal global use:** Merge or copy [config.toml](config.toml), [AGENTS.md](AGENTS.md), and [agents/](agents/) into your Codex home directory: `~/.codex/` by default, or the location set by `CODEX_HOME`. Preserve relative paths and existing personal settings. Role TOMLs are discovered automatically; no manual per-role registration is needed. Syncing changes to GitHub does not update the installed local configuration; merge or copy the desired changes and start a new session for them to take effect.
 2. **Project-only use:** Place configuration and role files under the trusted project's `.codex/` directory, and project instructions at the project root. See the [configuration guide](https://learn.chatgpt.com/docs/config-file/config-basic) for loading precedence.
 3. **Verify:** Start a new session and check the model, reasoning effort, roles, permissions, and loaded instructions. Use `/status` and `/debug-config` in the CLI; check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
 
@@ -57,4 +57,4 @@ Subagents inherit parent permissions; `sandbox_mode` in a role file does not cre
 
 ## Local preferences and portability
 
-Configure MCP servers, plugins, and machine-specific paths locally; desktop appearance settings are client preferences. `[windows]` is Windows-specific and can be omitted elsewhere. This setup uses `elevated`; check compatibility before changing sandbox implementations, especially the lifecycle of background experiment processes. See the [Windows sandbox guide](https://learn.chatgpt.com/docs/windows/windows-sandbox).
+Configure MCP servers, plugins, and machine-specific paths locally; desktop appearance settings are client preferences. `[windows]` is Windows-specific and can be omitted elsewhere. This setup uses `elevated`; before changing sandbox implementations, check compatibility with local background processes and SSH/tmux/Slurm experiment workflows. See the [Windows sandbox guide](https://learn.chatgpt.com/docs/windows/windows-sandbox).

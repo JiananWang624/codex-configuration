@@ -20,17 +20,15 @@ Escalate testing, review, or investigation only for a concrete unresolved risk.
 
 ## Implementation
 
-Keep changes local and minimal. Do not perform unrelated refactoring, renaming, formatting, cleanup, or architecture changes.
+Keep changes local and minimal; avoid unrelated refactoring, renaming, formatting, cleanup, or architecture changes.
 
-Avoid speculative abstractions and defensive complexity. Do not add wrappers, managers, factories, adapters, compatibility layers, feature flags, retries, fallback paths, or extra state unless required by the task or an evidenced failure mode.
+Avoid speculative abstractions and defensive complexity, including wrappers, managers, factories, adapters, compatibility layers, feature flags, retries, fallback paths, or extra state unless required by the task or an evidenced failure mode.
 
 Prefer simple direct code over abstractions used only once. Add comments only when they explain why something is necessary.
 
 Preserve established module boundaries. Split code when responsibilities or actual reuse justify it; do not compress readable code or add files and layers merely to satisfy a structural convention.
 
-Keep one authoritative implementation path for the same production behavior. Parallel implementations are allowed when intentionally retained as research baselines, ablations, paper variants, comparison methods, or reproducibility references.
-
-When the requested change intentionally replaces production behavior, validate the replacement and remove only obsolete code, wiring, configuration, dependencies, or consumers made unnecessary by that replacement. Keep unrelated cleanup out of scope. Do not remove intentionally retained research variants.
+Keep one authoritative implementation per production behavior. Preserve intentional research baselines, ablations, paper variants, comparison methods, and reproducibility references. When replacing production behavior, validate the replacement and remove only code, wiring, configuration, dependencies, or consumers made obsolete by it; keep unrelated cleanup out of scope.
 
 If the selected implementation cannot operate correctly, fail clearly with actionable diagnostics rather than silently falling back.
 
@@ -66,67 +64,54 @@ Record what another agent needs to continue without the chat: goal, changes from
 
 ## Validation
 
-Run the smallest sufficient validation for the affected behavior. Prefer focused tests, targeted builds, static checks, and smoke tests over broad project-wide validation.
+Run the smallest sufficient validation for the affected behavior: focused tests, targeted builds, static checks, or smoke tests.
 
-Do not run the full test suite by default. Use broader validation only when the change has broad impact, narrower checks are insufficient, targeted validation reveals wider risk, or the task explicitly reaches a final integration/release regression stage.
+Do not run the full suite by default. Broaden validation only for broad impact, insufficient narrower checks, wider risk revealed by targeted checks, or an explicit final integration/release regression stage.
 
-Do not repeat tests or benchmarks that already produced valid inspected evidence unless relevant code changed or a concrete coverage gap was identified.
+Do not repeat tests or benchmarks with valid inspected evidence unless relevant code changed or a concrete coverage gap remains.
 
 When numerical behavior changes, use a relevant reference comparison or invariant check with project-defined tolerances; successful execution alone does not establish scientific correctness.
 
-After validation, inspect the final diff once. Once the acceptance criteria are satisfied, proceed or finish; do not add extra validation or review solely for additional confidence.
+After validation, inspect the final diff once. When acceptance criteria are satisfied, proceed or finish without extra validation or review solely for confidence.
 
 ## Long-running commands
 
 For long-running non-interactive commands, wait on the existing process using the longest practical interval when intermediate output is unnecessary. Poll more frequently only when intermediate output or interaction is useful.
+
+Check the existing process or recorded job status before restarting or relaunching. Elapsed time or a disconnected terminal or SSH client alone does not establish failure or justify a duplicate run.
 
 ## Communication
 
 Be concise. Report what changed, validation performed, and anything still unverified. Avoid long progress narration unless it helps a decision or the user asks for it.
 
 ## Agent usage
-When the conditions below are met, this AGENTS.md explicitly authorizes and instructs the primary agent to delegate work to the named subagent without asking the user for additional confirmation.
+
+This file explicitly authorizes and instructs delegation to the named subagents when the conditions below are met, without additional user confirmation.
 
 The primary agent owns planning, architecture, scientific and algorithmic decisions, ambiguity resolution, orchestration, and final acceptance.
 
-Delegate only when context isolation, specialization, or genuinely
-independent work provides enough benefit to justify the additional agent
-and token cost.
+Delegate only when context isolation, specialization, or genuinely independent work justifies the additional agent and token cost. The primary may handle trivial edits directly; work tightly coupled to unresolved architectural, algorithmic, experimental, or scientific decisions must stay with the primary.
 
-Prefer minimal parent-history inheritance using options supported by the active tool. When `fork_turns` is available, set it explicitly: use `"none"` for self-contained tasks and `"all"` only when complete parent history is necessary. Use limited-history options only if the tool supports them.
+Use minimal history inheritance supported by the active tool. When `fork_turns` is available, set `"none"` for self-contained tasks and `"all"` only when complete parent history is necessary; use limited-history options only when supported.
 
-Give each delegated task the objective, already-decided constraints, relevant files or symbols, acceptance criteria, and required validation. Make tasks without inherited context self-contained.
+Give each task its objective, decided constraints, relevant files or symbols, acceptance criteria, and validation. Tasks without inherited context must be self-contained.
 
-Subagents must not spawn further subagents unless the primary agent
-explicitly delegates that authority.
+Subagents must not spawn further subagents unless the primary explicitly delegates that authority.
 
-Give `scout` and `quick_implementer` only clearly bounded tasks that do not require scientific or architectural decisions.
+Give `scout` and `quick_implementer` only bounded tasks without scientific or architectural decisions.
 
 During Plan mode, subagents may investigate, but do not begin source implementation until planning is complete and execution starts.
 
-Use `scout` for read-heavy repository investigation, code mapping, documentation lookup, configuration inspection, or log analysis when this would keep substantial noise out of the primary context.
+Choose roles by task; their files define detailed responsibilities:
 
-For implementation:
+* `scout`: read-heavy repository, code, documentation, configuration, or log investigation that keeps substantial noise out of the primary context.
+* `quick_implementer`: clear, local, decided changes following existing patterns with objective validation. Escalate broader work to the primary, who decides whether to handle it or use `system_implementer`.
+* `system_implementer`: substantial, approved implementation or integration under a self-contained contract when context isolation is beneficial.
+* `debugger`: non-obvious failures or unexplained behavior; reproduce and isolate root cause before broad fixes.
+* `reviewer`: a specific residual correctness, regression, security, validation, or research-semantic risk not adequately covered by existing validation; never a default review gate.
 
-* Use `quick_implementer` for clear, local, already-decided changes that follow an existing pattern and have objective validation.
-* Use `system_implementer` for substantial, already-approved implementation that can be expressed as a self-contained implementation contract and where isolating implementation context from the primary agent is beneficial. This commonly includes interacting modules, integration paths, or substantial implementation and validation work.
-* Keep implementation in the primary agent when it remains tightly coupled to unresolved architectural, algorithmic, experimental, or scientifically meaningful decisions.
+Reuse relevant agents for closely related follow-up work. Spawn a new agent for independent work, a different role, or when clean context is beneficial.
 
-For trivial edits, the primary agent may implement directly.
+Prefer one active subagent. Use a second only for genuinely independent work, within the configured two-subagent thread limit. Do not run overlapping implementation agents concurrently.
 
-If `quick_implementer` discovers that the task is broader than expected,
-stop and escalate to the primary agent. The primary agent decides whether
-to handle the work directly or delegate it to `system_implementer`.
-
-For closely related follow-up work, reuse the existing subagent through the active tool's follow-up mechanism when its context remains relevant rather than spawning a replacement.
-
-Spawn a new agent for independent work, a different role, or when a clean
-context is beneficial.
-
-Use `reviewer` only when a specific residual risk is not adequately covered by existing validation. Do not use review as a default gate for non-trivial changes, and do not repeat already-successful tests without a concrete reason.
-
-Use `debugger` for non-obvious failures or unexplained behavior. Reproduce the issue and isolate root cause before broad fixes.
-
-Prefer one active subagent at a time. Use a second only for genuinely independent investigations or hypotheses. Do not run overlapping implementation agents concurrently, and use at most two subagents unless explicitly justified.
-
-Subagents should return concise findings or changes, evidence or validation, and remaining issues rather than raw logs. The primary agent synthesizes their findings, decides final acceptance, and integrates durable records when warranted. Subagents should not independently maintain shared status documents unless assigned that responsibility.
+Subagents return concise findings or changes, evidence or validation, and remaining issues, not raw logs. The primary synthesizes results, accepts the work, and maintains durable records when warranted; subagents update shared status documents only when assigned.

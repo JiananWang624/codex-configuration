@@ -9,7 +9,7 @@
 ## 文件说明
 
 - [config.toml](config.toml)：主模型、推理强度、子代理并发及客户端偏好。
-- [AGENTS.md](AGENTS.md)：代码、科研、检索、文档交接、验证和委派的权威规则。
+- [AGENTS.md](AGENTS.md)：全局默认规则；与项目指令分层合并。
 - [agents/](agents/)：各子代理的模型与职责边界；权限继承自主会话。
 
 ## 模型与任务分工
@@ -23,7 +23,7 @@
 | `debugger` | GPT-6.1 Sol / high | 复现非显然故障并定位根因；仅在明确委派修复时改代码 |
 | `reviewer` | GPT-6.1 Sol / high | 只读审查具体的正确性、回归或研究语义风险 |
 
-未指定角色的子代理默认 Sol / medium，手动 `/review` 使用 Sol。已启用 Multi-Agent V2，最多并发两个子代理，不含主代理；通常只使用一个。Luna 不承担架构、算法或实验方法决策，超出范围时交回主代理。
+未指定角色的子代理默认 Sol / medium，手动 `/review` 使用 Sol。已启用 Multi-Agent V2，最多同时打开两个子代理线程，不含主代理；通常只使用一个。Luna 不承担架构、算法或实验方法决策，超出范围时交回主代理。
 
 Terra 承担方案、约束和验收标准已明确的实现；复杂集成可由主代理使用 Sol 完成。这是工作流默认分工，适用性与节省效果尚未经过同任务对比验证，后续按质量、返工和用量调整。[官方模型选择指南](https://developers.openai.com/api/docs/guides/model-selection)
 
@@ -47,12 +47,12 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 ## 安装与加载检查
 
-本仓库是模板；打开仓库不会自动将根目录的配置文件作为项目配置加载。
+本仓库是模板；打开仓库不会自动将根目录的 `config.toml` 作为项目配置加载。根目录 `AGENTS.md` 会作为项目指导生效，与全局指导合并；编辑本仓库时，若它也已安装为全局文件，规则可能重复。
 
-1. **个人全局使用**：将 [config.toml](config.toml)、[AGENTS.md](AGENTS.md) 和 [agents/](agents/) 合并或复制到 Codex 用户目录（默认 `~/.codex/`，或 `CODEX_HOME` 指定位置），保留相对路径和已有个人配置。
+1. **个人全局使用**：将 [config.toml](config.toml)、[AGENTS.md](AGENTS.md) 和 [agents/](agents/) 合并或复制到 Codex 用户目录（默认 `~/.codex/`，或 `CODEX_HOME` 指定位置），保留相对路径和已有个人配置。角色 TOML 会自动发现，无需逐个手动注册。将更改同步到 GitHub 不会更新已安装的本地配置；按需合并或复制所需更改，并启动新会话使其生效。
 2. **仅项目使用**：配置与角色文件放在受信任项目的 `.codex/` 下，项目指令放在项目根目录。具体加载顺序见[官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)。
 3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限及已加载指令。CLI 可用 `/status` 和 `/debug-config`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
 
 子代理继承主会话权限，角色文件的 `sandbox_mode` 不会建立独立沙箱；`scout` 与 `reviewer` 的只读要求属于行为约束。强制只读需在主会话设置；日常开发可选择 `workspace-write` 与 `on-request`。[官方权限说明](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls)
 
-MCP、插件及本机路径在本地单独配置，桌面外观属于客户端偏好。`[windows]` 为 Windows 专用，其他系统可省略；当前使用 `elevated`，切换沙箱实现前需核对兼容性，尤其是后台实验进程的生命周期。[官方 Windows 沙箱指南](https://learn.chatgpt.com/docs/windows/windows-sandbox)
+MCP、插件及本机路径在本地单独配置，桌面外观属于客户端偏好。`[windows]` 为 Windows 专用，其他系统可省略；当前使用 `elevated`。切换沙箱实现前，需核对本机后台进程及 SSH/tmux/Slurm 实验工作流的兼容性。[官方 Windows 沙箱指南](https://learn.chatgpt.com/docs/windows/windows-sandbox)
