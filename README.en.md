@@ -9,7 +9,7 @@ The goal is correct, reproducible research with clear project structure, concise
 ## Files
 
 - [config.toml](config.toml): Default model, reasoning effort, subagent concurrency, and client preferences.
-- [AGENTS.md](AGENTS.md): Global baseline instructions, merged with project guidance.
+- [global/AGENTS.md](global/AGENTS.md) is the global instruction template. The [root AGENTS.md](AGENTS.md) guides maintenance of this repository.
 - [agents/](agents/): Each subagent's model and responsibilities; permissions are inherited from the parent session.
 - [skills/](skills/): Personal skills, with each skill's `SKILL.md` and any bundled scripts, references, templates, and invocation settings.
 
@@ -30,29 +30,20 @@ Subagents without a custom role default to Sol / medium; manual `/review` uses S
 
 Terra handles implementation after the approach, constraints, and acceptance criteria are defined; the primary agent can use Sol for complex integrations. This is a workflow default, not a same-task benchmark of suitability or savings. Adjust it based on quality, rework, and usage. See the [model selection guide](https://developers.openai.com/api/docs/guides/model-selection).
 
-## Design principles
+## Research workflows and project records
 
-- **Keep code and structure simple.** Reuse existing code and suitable mature dependencies, make necessary local changes, and organize modules by responsibility and actual reuse. Preserve intentional baselines, ablations, and paper variants.
-- **Preserve research semantics.** Retain reference algorithms, numerical behavior, and relevant dependency versions. Resolve material ambiguity in coordinate conventions, units, data splits, metrics, seeds, or experiment protocols through evidence or clarification.
-- **Use context and delegation selectively.** Delegate when context isolation or independent work justifies the cost. Minimize inherited history and reuse relevant agents. Keep work coupled to unresolved research or architectural decisions in the primary agent. Tool parameters and escalation rules are in [Agent usage](AGENTS.md#agent-usage).
-- **Match validation and cost to the task.** Run the smallest sufficient checks; numerical changes need reference comparisons or invariant checks. Expensive training, large simulations, multi-seed experiments, sweeps, large downloads, and real-hardware actions require explicit authorization. Continue within the agreed scope and budget.
+The global template defines [research and resource boundaries](global/AGENTS.md#research-correctness-and-resource-safety) and [experiment records and handoff](global/AGENTS.md#documentation-and-handoff). Each project's `AGENTS.md` points to its existing state, facts, and experiment records. When implementation produces a result that changes future judgment or action, update the owning record and link the evidence. Use the project overview to record the result's effect on current direction.
 
-## Experiment records and handoff
+- Explicitly invoke [`$project-memory`](skills/project-memory/SKILL.md) to establish, recover, or maintain durable project records.
+- Explicitly invoke [`$project-hygiene`](skills/project-hygiene/SKILL.md) to audit stale repository assets or Codex instructions and carry out authorized cleanup.
 
-Global guidance defines organization and reading principles; projects supply paths, commands, environments, experiment protocols, and budgets.
-
-- **Clear entry points:** Use project guidance, READMEs, or existing indexes to locate material for the task.
-- **Progressive reading:** Search keywords or existing issue/experiment identifiers for short entries, then follow links to relevant procedures and evidence. Batch independent lookups within that scope.
-- **One authoritative source:** Maintain procedures centrally and reference original evidence. Link experimental results to the code, effective configuration, and protocol versions used, preserving necessary reproduction details.
-- **Clear status and history:** Keep current status short, distinguish observations, inferences, and unverified claims, and state applicability. Mark superseded conclusions, link to current guidance, and preserve historical evidence.
-
-Reuse existing records and layouts. Add indexes or split documents only when navigation requires it; no fixed template or routine reports are required. See [Documentation and handoff](AGENTS.md#documentation-and-handoff) for the authoritative rules.
+Among personal skills, only [`systematic-debugging`](skills/systematic-debugging/SKILL.md) can activate automatically, for failures or anomalies with an unclear cause.
 
 ## Manual sync and verification
 
-Opening this repository does not automatically load its root `config.toml` or `skills/`. The root `AGENTS.md` applies as project guidance and merges with global guidance, so installing the same file globally duplicates its rules while editing this repository.
+When launched from this repository's root, Codex combines the machine's global instructions with the repository maintenance guidance. The `global/AGENTS.md` template, root `config.toml`, and `skills/` are source files for manual deployment.
 
-1. **Personal global use:** After approval, merge the desired `config.toml`, `AGENTS.md`, and `agents/` settings into the Codex home of each target machine, preserving machine-specific settings. The default is `~/.codex/`, or the location set by `CODEX_HOME`. Copy each selected skill directory in full into that home's `skills/`, for example `~/.codex/skills/research-reproduction/SKILL.md`. Each client manages its own bundled skills and plugins.
+1. **Personal global use.** After approval, merge `global/AGENTS.md` into `AGENTS.md` in each machine's Codex home. The default home is `~/.codex/` or the location set by `CODEX_HOME`. Merge selected `config.toml` and `agents/` settings as needed, keeping machine-specific settings. Copy each selected skill directory in full into one verified skill location on the target machine. This workstation currently uses `~/.codex/skills/`. Each client manages its own bundled skills and plugins.
 2. **Project-only use:** Place configuration and role files under the trusted project's `.codex/` directory, and project instructions at the project root. See the [configuration guide](https://learn.chatgpt.com/docs/config-file/config-basic) for loading precedence.
 3. **Verify:** Start a new session and check the model, reasoning effort, roles, permissions, instructions, and skills. Use `/status`, `/debug-config`, and `/skills` in the CLI. Check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
 

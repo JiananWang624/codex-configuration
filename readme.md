@@ -9,7 +9,7 @@
 ## 文件说明
 
 - [config.toml](config.toml)：主模型、推理强度、子代理并发及客户端偏好。
-- [AGENTS.md](AGENTS.md)：全局默认规则；与项目指令分层合并。
+- [global/AGENTS.md](global/AGENTS.md) 是全局规则模板。[根目录 AGENTS.md](AGENTS.md) 指导本仓库的维护。
 - [agents/](agents/)：各子代理的模型与职责边界；权限继承自主会话。
 - [skills/](skills/)：个人技能目录，包含各技能的 `SKILL.md` 及附带的脚本、参考资料、模板和调用配置。
 
@@ -30,29 +30,20 @@
 
 Terra 承担方案、约束和验收标准已明确的实现；复杂集成可由主代理使用 Sol 完成。这是工作流默认分工，适用性与节省效果尚未经过同任务对比验证，后续按质量、返工和用量调整。[官方模型选择指南](https://developers.openai.com/api/docs/guides/model-selection)
 
-## 配置思路
+## 科研工作流与项目记录
 
-- **代码与结构简洁**：优先复用现有代码和合适的成熟依赖，只做必要的局部修改；按职责和实际复用组织模块，保留有意维护的基线、消融和论文变体。
-- **科研语义优先**：保留参考算法、数值行为和相关依赖版本；坐标系、单位、数据划分、指标、种子和实验协议等有实质歧义时先查证或询问。
-- **上下文与委派按需**：仅在隔离上下文或独立工作值得额外成本时委派，最小化历史继承并复用相关代理；科研或架构决策紧密耦合的任务留在主代理。工具参数与升级规则见 [Agent usage](AGENTS.md#agent-usage)。
-- **验证与成本匹配**：执行最小充分验证，数值变化需要参考比较或不变量检查。昂贵训练、大规模仿真、多种子实验、参数扫描、大量下载及真实硬件操作需明确授权；在约定范围和预算内连续推进。
+全局模板规定[科研与资源边界](global/AGENTS.md#research-correctness-and-resource-safety)和[实验记录与交接要求](global/AGENTS.md#documentation-and-handoff)。各项目在自己的 `AGENTS.md` 指向现有的状态、事实和实验记录。普通实施产生足以改变后续判断或行动的结果时，更新对应记录，链接当时的证据。项目概览记录结果对当前方向的影响。
 
-## 实验记录与交接
+- 显式调用 [`$project-memory`](skills/project-memory/SKILL.md) 建立、恢复或维护长期项目记录。
+- 显式调用 [`$project-hygiene`](skills/project-hygiene/SKILL.md) 审查过时的仓库文件或 Codex 指令，并执行已授权的清理。
 
-全局配置规定组织与读取原则；实际路径、命令、环境、实验协议和预算由项目提供。
-
-- **入口明确**：通过项目指导、README 或已有索引，按任务定位对应资料。
-- **渐进式读取**：用关键词或已有问题／实验编号定位简短条目，再沿链接展开相关步骤和证据；相关范围内的独立查找可批量进行。
-- **单一权威来源**：操作步骤集中维护，记录引用原始证据；实验结果关联当时的代码、有效配置和协议版本，保留必要复现条件。
-- **状态与历史清楚**：当前状态简短，区分观察、推断和待验证结论；注明适用条件及已被替代的结论，链接到当前方案并保留历史证据。
-
-复用已有记录和布局，仅在导航不足时增加索引或拆分文档，不强制模板或例行报告。细则见 [Documentation and handoff](AGENTS.md#documentation-and-handoff)。
+个人技能中，只有 [`systematic-debugging`](skills/systematic-debugging/SKILL.md) 允许自动触发，用于原因不明的失败或异常。
 
 ## 手动同步与加载检查
 
-打开本仓库不会自动加载根目录的 `config.toml` 和 `skills/`。根目录 `AGENTS.md` 会作为项目指导与全局指导合并；如果两份文件内容相同，规则会重复。
+从仓库根目录启动时，Codex 会合并本机全局指令和本仓库的维护规则。`global/AGENTS.md`、根目录的 `config.toml` 及 `skills/` 是供手动部署的源文件。
 
-1. **个人全局使用**：验收后，将所需的 `config.toml`、`AGENTS.md` 和 `agents/` 内容合并到各机器的 Codex 用户目录（默认 `~/.codex/`，或 `CODEX_HOME` 指定位置），保留已有的机器专用设置。把选定的技能目录完整复制到用户目录的 `skills/` 下，例如 `~/.codex/skills/research-reproduction/SKILL.md`。内置技能和插件由各客户端管理。
+1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到各机器 Codex 用户目录的 `AGENTS.md`。该目录默认为 `~/.codex/`，也可以由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定的技能目录完整复制到该机器已经验证的技能目录，每个技能保留一份。本机当前使用 `~/.codex/skills/`。内置技能和插件由各客户端管理。
 2. **仅项目使用**：配置与角色文件放在受信任项目的 `.codex/` 下，项目指令放在项目根目录。具体加载顺序见[官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)。
 3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
 

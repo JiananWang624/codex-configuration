@@ -23,4 +23,4 @@ Report the cause supported by the evidence. If the evidence is inconclusive, rep
 
 If a fix is in scope, make the smallest change supported by the evidence. Rerun the original reproduction after the final relevant change. If only a faithful proxy is feasible, report what it verified and what remains untested. Add a regression check when a stable case covers a gap in existing tests.
 
-For research-reproduction tasks, return the diagnostic evidence to that workflow for its final verdict.
+For research reproduction, report the diagnostic evidence and leave the overall verdict to the reproduction task.

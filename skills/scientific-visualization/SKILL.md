@@ -1,6 +1,6 @@
 ---
 name: scientific-visualization
-description: Create, audit, or export publication figures, or perform an explicit scientific-figure audit. Do not invoke for exploratory plots or routine data visualization.
+description: Create or export publication figures, or audit scientific figures on explicit request. Do not invoke for exploratory plots or routine data visualization.
 license: MIT
 metadata:
   version: "1.4"
