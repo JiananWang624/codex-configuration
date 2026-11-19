@@ -1,34 +1,26 @@
 ---
 name: systematic-debugging
-description: "Use when a bug, regression, performance drop, flaky or stochastic failure, numerical anomaly, robotics/simulation mismatch, or research-reproduction divergence has an unclear cause. Skip mechanical fixes whose cause is already established."
+description: "Diagnose failures with unclear causes, including regressions, performance drops, intermittent failures, numerical anomalies, and robotics, simulation, or research reproduction mismatches. Skip established causes and mechanical fixes."
 ---
 
 # Systematic Debugging
 
-Diagnose uncertain causes with the cheapest faithful evidence. Preserve relevant controls, test explanations instead of patches, fix narrowly, and stop when the cause is supported.
+## Establish a faithful signal
 
-## 1. Anchor the symptom
+State observed and expected behavior using the most useful evidence already available. Choose the least costly check that preserves the conditions relevant to the failure, and use it to narrow the fault domain. For intermittent failures, characterize frequency or variability within the agreed budget and keep comparison conditions comparable.
 
-State observed versus expected behavior on the user's real failure surface. Capture the smallest useful evidence already available: error/output, failing command, benchmark delta, divergent metric, trace, reproduction rate, or known-good state. Do not substitute an easier nearby failure. For stochastic or intermittent failures, characterize frequency or distribution when one run is not representative.
+## Discriminate causes
 
-## 2. Build a faithful signal and localize
+Keep hypotheses that would change the next action. Choose the smallest probe and state which result would distinguish them. Use bisection, instrumentation, profiling, or controlled comparisons as appropriate. Verify assumptions about frameworks, drivers, simulators, or hardware before basing a workaround on them.
 
-Use the cheapest repeatable check that preserves the suspected mechanism: focused test/command, benchmark, replay, differential run, reduced simulation, or small harness. For expensive failures, prefer a faithful proxy or bounded real run over an artificial tiny repro.
+## Preserve domain controls
 
-Localize the fault domain with evidence: environment/build/hardware; data/version; config/evaluation protocol; interface/state/lifecycle; implementation/algorithm; concurrency/timing/distribution; numerical stability; or performance/resources.
+For research reproduction, hold data, metrics, checkpoint selection, evaluation conditions, and unrelated settings fixed. For robotics or simulation, preserve relevant reset state, timing, control frequency, simulator or firmware versions, coordinate frames, and the boundary between simulation and hardware.
 
-For stochastic work, use repeated trials, seeds, or controlled conditions when needed. For robotics/simulation, preserve implicated timing, reset/initial state, control frequency, simulator/firmware/environment version, coordinate frames, and hardware boundary.
+## Finish at the requested scope
 
-## 3. Discriminate causes
+Report the cause supported by the evidence. If the evidence is inconclusive, report what remains uncertain and the next discriminating check.
 
-Keep only hypotheses that change the next action. Rank plausible causes and attach an observation that separates them. Use the smallest discriminating probe: bisection, differential runs, instrumentation/debuggers, profiling, or controlled perturbations. Change one material variable at a time when practical.
+If a fix is in scope, make the smallest change supported by the evidence. Rerun the original reproduction after the final relevant change. If only a faithful proxy is feasible, report what it verified and what remains untested. Add a regression check when a stable case covers a gap in existing tests.
 
-For research code, preserve experimental controls. Do not erase a reproduction mismatch by changing unrelated hyperparameters, datasets, metrics, checkpoint selection, or evaluation conditions. Verify authoritative documentation/source or direct evidence before adding a workaround based on assumed framework, driver, or hardware behavior.
-
-## 4. Fix narrowly and verify
-
-Apply the smallest change supported by evidence; avoid unrelated refactors, upgrades, or cleanup. After the last relevant mutation, rerun the original or strongest faithful reproduction and add a regression check when a stable representative seam exists.
-
-Stop once the cause is sufficiently supported and the fix passes. Report root cause, discriminating evidence, fix, and residual uncertainty.
-
-`research-reproduction` may use this skill for unexplained divergence. It diagnoses cause; it does not decide the reproduction verdict or automatically invoke `independent-verification`.
+For research-reproduction tasks, return the diagnostic evidence to that workflow for its final verdict.
