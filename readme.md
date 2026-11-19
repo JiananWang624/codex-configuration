@@ -17,6 +17,8 @@
 
 ## 模型与任务分工
 
+仓库模板以 GPT-6.1 Sol 作为 CLI 与 IDE 共用的默认值。客户端支持 GPT-6.2 Sol 时，可从模型选择器切换，或运行 `codex -m gpt-6.2-sol`。 [Codex 模型指南](https://learn.chatgpt.com/docs/models#configure-your-default-local-model)
+
 | 角色 | 模型 / 推理强度 | 职责 |
 | --- | --- | --- |
 | 主代理 | GPT-6.1 Sol / medium，Plan 模式 high | 规划、架构与科学决策、处理歧义、委派和最终验收 |
@@ -26,16 +28,25 @@
 | `debugger` | GPT-6.1 Sol / high | 复现非显然故障并定位根因；仅在明确委派修复时改代码 |
 | `reviewer` | GPT-6.1 Sol / high | 只读审查具体的正确性、回归或研究语义风险 |
 
-未指定角色的子代理默认 Sol / medium，手动 `/review` 使用 Sol。已启用 Multi-Agent V2，最多同时打开两个子代理线程，不含主代理；通常只使用一个。Luna 不承担架构、算法或实验方法决策，超出范围时交回主代理。
+未指定模型和推理强度的子代理继承主会话设置，`/review` 使用当前会话模型。命名角色使用表中的设置。Multi-Agent V2 最多同时打开两个子代理线程，不含主代理，通常只使用一个。 [子代理配置指南](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning)
 
 Terra 承担方案、约束和验收标准已明确的实现；复杂集成可由主代理使用 Sol 完成。这是工作流默认分工，适用性与节省效果尚未经过同任务对比验证，后续按质量、返工和用量调整。[官方模型选择指南](https://developers.openai.com/api/docs/guides/model-selection)
 
 ## 科研工作流与项目记录
 
-全局模板规定[科研与资源边界](global/AGENTS.md#research-correctness-and-resource-safety)和[实验记录与交接要求](global/AGENTS.md#documentation-and-handoff)。各项目在自己的 `AGENTS.md` 指向现有的状态、事实和实验记录。普通实施产生足以改变后续判断或行动的结果时，更新对应记录，链接当时的证据。项目概览记录结果对当前方向的影响。
+跨项目的科研、资源和验证规则放在全局模板里，各项目用自己的 `AGENTS.md` 指向已有记录。项目记忆和清理通过手动调用，让日常任务按需加载流程。 [全局规则模板](global/AGENTS.md)
 
-- 显式调用 [`$project-memory`](skills/project-memory/SKILL.md) 建立、恢复或维护长期项目记录。
-- 显式调用 [`$project-hygiene`](skills/project-hygiene/SKILL.md) 审查过时的仓库文件或 Codex 指令，并执行已授权的清理。
+| 痛点 | 解决方式 | 对应文件 |
+| --- | --- | --- |
+| 换会话丢背景，旧结论与重复事实越积越多 | 复用现有状态、事实和实验记录。每条知识有一个主位置，按对应版本的代码、数据或已验证结果更新。 | [`$project-memory`](skills/project-memory/SKILL.md#maintain-the-owning-records) |
+| 阴性结果容易丢，旧实验难复跑 | 用稳定的实验 ID 记录结论、代码版本和工作树状态、配置来源与生效参数，并链接原始证据。保留有价值的失败和无差异结果。 | [`$project-memory`](skills/project-memory/SKILL.md#maintain-the-owning-records) |
+| 忘记为何选方案，或什么证据推翻了旧决策 | 在现有记录里保存关键备选、理由和证据。当前状态只呈现仍有效的决定，并链接历史。 | [`$project-memory`](skills/project-memory/SKILL.md#preserve-decisions-and-recurring-pitfalls) |
+| Agent 跨会话反复踩同一个坑 | 优先修根因或加自动检查。只记录仍可能重现、代价高且不易察觉的问题。 | [`$project-memory`](skills/project-memory/SKILL.md#preserve-decisions-and-recurring-pitfalls) |
+| 旧代码、依赖、配置和产物堆积，清理可能误删实验依据 | 清理前查实际调用和实验依赖。按授权范围处置，保留仍支撑溯源或用途不明的内容。 | [`$project-hygiene`](skills/project-hygiene/SKILL.md#repository-assets) |
+| 路径或工具变了，旧指令失效或冲突 | 审计实际加载的规则、命令和路径。核实旧变通方案是否仍有用，再修改主规则。 | [`$project-hygiene`](skills/project-hygiene/SKILL.md#codex-instructions) |
+| 每次读完整项目记录，占用上下文 | 从项目入口定位相关索引或章节，按需追到原始产物。 | [全局查阅规则](global/AGENTS.md#core-principles) |
+| 记忆机制本身变成负担 | 沿用已有 Markdown 和 Git 记录。只在确实缺记录时新增，反复难找时再按主题拆分。 | [`$project-memory`](skills/project-memory/SKILL.md) |
+| 琐事和临时猜测挤占长期记录 | 只更新会改变未来判断或行动的信息，区分已观察事实、推断和未验证说法。 | [全局记录规则](global/AGENTS.md#documentation-and-handoff) |
 
 个人技能中，只有 [`systematic-debugging`](skills/systematic-debugging/SKILL.md) 允许自动触发，用于原因不明的失败或异常。
 
@@ -43,9 +54,11 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 从仓库根目录启动时，Codex 会合并本机全局指令和本仓库的维护规则。`global/AGENTS.md`、根目录的 `config.toml` 及 `skills/` 是供手动部署的源文件。
 
-1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到各机器 Codex 用户目录的 `AGENTS.md`。该目录默认为 `~/.codex/`，也可以由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定的技能目录完整复制到该机器已经验证的技能目录，每个技能保留一份。本机当前使用 `~/.codex/skills/`。内置技能和插件由各客户端管理。
-2. **仅项目使用**：配置与角色文件放在受信任项目的 `.codex/` 下，项目指令放在项目根目录。具体加载顺序见[官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)。
+1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到 Codex 用户目录的 `AGENTS.md`。用户目录默认为 `~/.codex/`，可由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定技能的完整目录复制到 `~/.agents/skills/` 或该机器已验证的技能目录，例如本机的 `~/.codex/skills/`。每个技能保留一份。 [技能加载位置](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+2. **仅项目使用。** 在受信任项目中，将配置放入 `.codex/config.toml`，角色放入 `.codex/agents/`，指令放在项目根目录，技能放入 `.agents/skills/`。 [官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)
 3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
+
+从旧模板迁移时，若希望 `/review` 和普通子代理继承会话设置，请移除已有的 `review_model`、`agents.default_subagent_model` 与 `agents.default_subagent_reasoning_effort` 覆盖项。
 
 子代理继承主会话权限，角色文件的 `sandbox_mode` 不会建立独立沙箱；`scout` 与 `reviewer` 的只读要求属于行为约束。强制只读需在主会话设置；日常开发可选择 `workspace-write` 与 `on-request`。[官方权限说明](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls)
 

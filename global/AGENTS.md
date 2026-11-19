@@ -10,7 +10,7 @@ Keep one authoritative implementation per production behavior. Validate replacem
 
 ## Working boundaries
 
-For explanation, review, diagnosis, or planning, inspect and report without editing. For implementation, fixes, or builds, make the in-scope change and run applicable non-destructive checks without asking first.
+For requests limited to explanation, review, diagnosis, or planning, inspect and report without editing. When changes are requested, implement them within scope and run applicable non-destructive checks without asking first.
 
 Ask when a missing decision materially affects the result or when destructive, external, privileged, or costly action requires approval. Preserve existing user changes and avoid destructive Git commands, force pushes, and broad restores. Use Notion only on explicit request.
 
@@ -30,7 +30,7 @@ Link important experiment results and failures to the actual code state, effecti
 
 ## Workflow routing
 
-Use `$project-memory` on explicit invocation to establish, recover, or maintain durable project knowledge. Use `$project-hygiene` on explicit invocation to audit stale assets or instructions and carry out authorized cleanup. `systematic-debugging` may activate for failures or mismatches with an unclear cause.
+Use `$project-memory` for durable project knowledge and `$project-hygiene` for evidence-based cleanup when explicitly invoked. `systematic-debugging` may activate for failures or mismatches with an unclear cause.
 
 ## Validation
 
@@ -42,7 +42,7 @@ For material numerical changes, compare against a relevant reference or invarian
 
 The primary owns planning, architecture, scientific and algorithmic decisions, orchestration, and final acceptance. Subagents return material ambiguity to the primary. This guidance authorizes scoped delegation without additional confirmation when specialization, isolation, or independent work justifies the cost.
 
-Use `scout` for focused read-heavy investigation, `quick_implementer` for bounded decided edits, `system_implementer` for substantial decided implementation, `debugger` for unclear failures, and `reviewer` for a concrete residual risk. Keep unresolved scientific and architectural choices with the primary.
+Use `scout` for focused read-heavy investigation, `quick_implementer` for small specified changes, `system_implementer` for substantial specified changes, `debugger` for unclear failures, and `reviewer` for a concrete residual risk.
 
 Assign self-contained objectives, scope, relevant constraints, and verification. Minimize inherited context and reuse agents for related work. Prefer one active subagent and use a second only for independent work within the configured limit. Keep implementation ownership disjoint. Subagents may delegate further only with explicit authority and update shared records only when assigned. In Plan mode, limit delegated work to investigation.
 
