@@ -1,6 +1,6 @@
 ---
 name: project-memory
-description: Establish, recover, or maintain durable knowledge in a long-running coding or research project.
+description: Establish, recover, or reorganize durable records when the task requires it in a clearly multi-session project. Skip small fixes, one-off scripts, temporary analyses, and routine lookups.
 ---
 
 # Project Memory
@@ -11,11 +11,13 @@ Start with project instructions, the README, or an existing index. Identify the 
 
 When maintenance is in scope, reuse existing paths and conventions. Add a record only for a concrete gap with information that could change a future session's reasoning or action. Keep project knowledge in its owning record and use project `AGENTS.md` to point to the relevant entry points and update rule.
 
+When setting up durable records for a new long-running research project with no established location for them, use `docs/RESEARCH_STATE.md` for needed current-state notes. Add `docs/PROJECT_FACTS.md` for durable facts or `docs/EXPERIMENTS.md` for material experiment results when there is content to record.
+
 - **Current state** captures the objective, approach, established findings, open questions, and next action as applicable. Rewrite or merge superseded guidance and link to relevant decision or experiment history.
 - **Project facts** capture stable, reusable facts with sources and applicability. When records disagree, check code, data, or verified results for the relevant version and conditions. Correct the owning record when the evidence settles the conflict. Label inferences and unresolved claims explicitly.
 - **Experiments** record a stable ID, the question, material outcome and conclusion, interpretation limits, and links to evidence. Include informative negative and null results. Update the current state or a fact only when the result changes it, and link back to the experiment record.
 
-For important runs, record the actual code revision and whether the worktree was clean or dirty. Link an existing diff or snapshot when available. Link the config source and the effective settings or overrides, plus the protocol, output, and environment or lockfile when material. Identify missing provenance explicitly.
+For important runs, record the actual code revision and whether the worktree was clean or dirty. Link the saved diff or snapshot and relevant untracked inputs when available. Link the config source and the effective settings or overrides, plus the protocol, output, and environment or lockfile when material. Identify missing provenance explicitly.
 
 ## Preserve decisions and recurring pitfalls
 

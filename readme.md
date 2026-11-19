@@ -34,7 +34,7 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 ## 科研工作流与项目记录
 
-跨项目的科研、资源和验证规则放在全局模板里，各项目用自己的 `AGENTS.md` 指向已有记录。项目记忆和清理通过手动调用，让日常任务按需加载流程。 [全局规则模板](global/AGENTS.md)
+跨项目的科研、资源和验证规则放在全局模板里，各项目用自己的 `AGENTS.md` 指向已有记录。 [全局规则模板](global/AGENTS.md)
 
 | 痛点 | 解决方式 | 对应文件 |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 | 记忆机制本身变成负担 | 沿用已有 Markdown 和 Git 记录。只在确实缺记录时新增，反复难找时再按主题拆分。 | [`$project-memory`](skills/project-memory/SKILL.md) |
 | 琐事和临时猜测挤占长期记录 | 只更新会改变未来判断或行动的信息，区分已观察事实、推断和未验证说法。 | [全局记录规则](global/AGENTS.md#documentation-and-handoff) |
 
-个人技能中，只有 [`systematic-debugging`](skills/systematic-debugging/SKILL.md) 允许自动触发，用于原因不明的失败或异常。
+长期项目确实需要建立、恢复或整理记录时，[`project-memory`](skills/project-memory/SKILL.md) 可自动触发。原因不明的故障可触发 [`systematic-debugging`](skills/systematic-debugging/SKILL.md)。清理通过显式调用 `$project-hygiene` 启动。
 
 ## 手动同步与加载检查
 

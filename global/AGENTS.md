@@ -28,9 +28,11 @@ Reuse existing records and keep one authoritative source per fact, result, or pr
 
 Link important experiment results and failures to the actual code state, effective configuration, protocol, and evidence. Leave enough information to resume or rerun the work when handing it off, including material changes, decisions, and conditions. For ongoing runs, record the host, job ID, output location, and last confirmed status as applicable.
 
+Before launching an important experiment from a dirty worktree, save a diff or snapshot of the code that will run on the execution host and preserve the untracked scripts and configs it uses. If essential material is missing, state that the run cannot be fully reconstructed.
+
 ## Workflow routing
 
-Use `$project-memory` for durable project knowledge and `$project-hygiene` for evidence-based cleanup when explicitly invoked. `systematic-debugging` may activate for failures or mismatches with an unclear cause.
+`project-memory` may activate when a clearly multi-session project needs durable records established, recovered, or reorganized for the current task. Use `$project-hygiene` for evidence-based cleanup when explicitly invoked. `systematic-debugging` may activate for failures or mismatches with an unclear cause.
 
 ## Validation
 

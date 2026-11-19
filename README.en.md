@@ -34,7 +34,7 @@ Terra handles implementation after the approach, constraints, and acceptance cri
 
 ## Research workflows and project records
 
-The global template holds research, resource, and validation rules that apply across projects. Each project's `AGENTS.md` points to existing records. Invoke project memory and cleanup explicitly so routine tasks load only the workflows they need. [Global instruction template](global/AGENTS.md)
+The global template holds research, resource, and validation rules that apply across projects. Each project's `AGENTS.md` points to existing records. [Global instruction template](global/AGENTS.md)
 
 | Problem | How the configuration addresses it | Where it is defined |
 | --- | --- | --- |
@@ -48,7 +48,7 @@ The global template holds research, resource, and validation rules that apply ac
 | Project memory becomes another system to maintain | Reuse Markdown and Git records. Add records for real gaps and split by topic when retrieval repeatedly becomes difficult. | [`$project-memory`](skills/project-memory/SKILL.md) |
 | Routine details and tentative guesses crowd out durable knowledge | Update records only when the information can change future judgment or action. Distinguish observations, inferences, and unverified claims. | [Global record rules](global/AGENTS.md#documentation-and-handoff) |
 
-Among personal skills, only [`systematic-debugging`](skills/systematic-debugging/SKILL.md) can activate automatically, for failures or anomalies with an unclear cause.
+[`project-memory`](skills/project-memory/SKILL.md) can activate automatically when the current task in a multi-session project requires establishing, recovering, or reorganizing durable records. Failures with an unclear cause can activate [`systematic-debugging`](skills/systematic-debugging/SKILL.md). Invoke `$project-hygiene` explicitly for cleanup.
 
 ## Manual sync and verification
 
