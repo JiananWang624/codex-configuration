@@ -23,6 +23,11 @@ service_tier = "default"
 max_concurrent_threads_per_session = 2
 
 
+# Prefer MXC when available and permitted; elevated is the selection fallback.
+# This does not retry failed commands on a different backend.
+[features]
+prefer_mxc = true
+
 [windows]
 sandbox = "elevated"
 

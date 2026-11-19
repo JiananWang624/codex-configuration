@@ -67,4 +67,6 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 子代理继承主会话权限，角色文件的 `sandbox_mode` 不会建立独立沙箱；`scout` 与 `reviewer` 的只读要求属于行为约束。强制只读需在主会话设置；日常开发可选择 `workspace-write` 与 `on-request`。[官方权限说明](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls)
 
-MCP、插件及本机路径在本地单独配置，桌面外观属于客户端偏好。`[windows]` 为 Windows 专用，其他系统可省略；当前使用 `elevated`。切换沙箱实现前，需核对本机后台进程及 SSH/tmux/Slurm 实验工作流的兼容性。[官方 Windows 沙箱指南](https://learn.chatgpt.com/docs/windows/windows-sandbox)
+MCP、插件及本机路径在本地单独配置，桌面外观属于客户端偏好。共享模板通过 `features.prefer_mxc = true` 优先选择可用且策略允许的 MXC，并保留 `windows.sandbox = "elevated"` 作为其他 Windows 主机的选择回退；这不是命令失败后的自动重试，也不改变 Linux 的沙箱实现。[官方 Windows 沙箱指南](https://learn.chatgpt.com/docs/windows/windows-sandbox)
+
+部署前确认目标客户端支持这些设置，并实际执行一个低成本只读文件测试；解析、登录或 doctor 正常不等于命令可执行。保留机器专用覆盖：本机已验证的 `windows.sandbox = "mxc"` 可以继续使用，但不能假设显式 MXC 会回退。旧客户端先核对版本支持，不要忽略未知设置告警。切换前备份配置，并检查后台进程及 SSH/tmux/Slurm 工作流兼容性。不要通过放宽权限、重置防火墙或删除共享沙箱状态来让测试通过。
