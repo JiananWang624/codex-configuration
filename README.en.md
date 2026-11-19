@@ -54,9 +54,14 @@ The global template holds research, resource, and validation rules that apply ac
 
 When launched from this repository's root, Codex combines the machine's global instructions with the repository maintenance guidance. The `global/AGENTS.md` template, root `config.toml`, and `skills/` are source files for manual deployment.
 
-1. **Personal global use.** After approval, merge `global/AGENTS.md` into `AGENTS.md` in the Codex home. The default home is `~/.codex/` or the location set by `CODEX_HOME`. Merge selected `config.toml` and `agents/` settings as needed, keeping machine-specific settings. Copy each selected skill directory in full into `~/.agents/skills/` or a verified location on the target machine, such as `~/.codex/skills/` on this workstation. Keep one copy per skill. [Skill discovery paths](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+1. **Personal global use.** After approval, merge `global/AGENTS.md` into the active global instructions in the Codex home, usually `AGENTS.md`. The default home is `~/.codex/` or the location set by `CODEX_HOME`. Merge selected `config.toml` and `agents/` settings as needed, keeping machine-specific settings. Copy each selected skill directory in full into `~/.agents/skills/` or a verified location on the target machine, such as `~/.codex/skills/` on this workstation. Keep one copy per skill. [Skill discovery paths](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
 2. **Project-only use.** In a trusted project, put configuration in `.codex/config.toml`, roles in `.codex/agents/`, project instructions at the root, and skills in `.agents/skills/`. [Configuration guide](https://learn.chatgpt.com/docs/config-file/config-basic)
-3. **Verify:** Start a new session and check the model, reasoning effort, roles, permissions, instructions, and skills. Use `/status`, `/debug-config`, and `/skills` in the CLI. Check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
+3. **Verify.** Record the deployed repository commit (`git rev-parse HEAD`), then start a new session in the target client and check the model, reasoning effort, roles, permissions, instructions, and skills. Use `/status`, `/debug-config`, and `/skills` in the CLI. Check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
+
+**When migrating from an older version**
+
+- Confirm the target client, version, and effective `CODEX_HOME`. A non-empty `AGENTS.override.md` there takes precedence over `AGENTS.md`. Merge the template into the active file, remove duplicate rules, and preserve machine-specific paths, MCP settings, and credentials. [Global instruction discovery](https://learn.chatgpt.com/docs/agent-configuration/agents-md#how-codex-discovers-guidance)
+- Check the client's active skill directories for same-name copies and the former `research-reproduction` skill. The maintainer decides which of these copies to retain. Preserve skills from other sources.
 
 When merging an older template and adopting session inheritance, remove existing `review_model`, `agents.default_subagent_model`, and `agents.default_subagent_reasoning_effort` overrides.
 

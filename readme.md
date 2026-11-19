@@ -54,9 +54,14 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 从仓库根目录启动时，Codex 会合并本机全局指令和本仓库的维护规则。`global/AGENTS.md`、根目录的 `config.toml` 及 `skills/` 是供手动部署的源文件。
 
-1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到 Codex 用户目录的 `AGENTS.md`。用户目录默认为 `~/.codex/`，可由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定技能的完整目录复制到 `~/.agents/skills/` 或该机器已验证的技能目录，例如本机的 `~/.codex/skills/`。每个技能保留一份。 [技能加载位置](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到 Codex 用户目录当前生效的全局指令文件，通常是 `AGENTS.md`。用户目录默认为 `~/.codex/`，可由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定技能的完整目录复制到 `~/.agents/skills/` 或该机器已验证的技能目录，例如本机的 `~/.codex/skills/`。每个技能保留一份。 [技能加载位置](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
 2. **仅项目使用。** 在受信任项目中，将配置放入 `.codex/config.toml`，角色放入 `.codex/agents/`，指令放在项目根目录，技能放入 `.agents/skills/`。 [官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)
-3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
+3. **检查生效情况。** 记录部署所用的仓库提交（`git rev-parse HEAD`），再从目标客户端启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`。IDE、桌面端查看会话设置，命令行或宿主可能覆盖默认值。
+
+**从旧版本迁移时**
+
+- 确认目标客户端、版本和生效的 `CODEX_HOME`。其中非空的 `AGENTS.override.md` 优先于 `AGENTS.md`。将模板规则合并到实际生效的文件，去除重复条目，保留机器专用路径、MCP 设置和凭据。 [全局指令加载规则](https://learn.chatgpt.com/docs/agent-configuration/agents-md#how-codex-discovers-guidance)
+- 在客户端实际加载的技能目录中检查同名副本和旧版 `research-reproduction`。由维护者决定这些副本的去留，保留其他来源的技能。
 
 从旧模板迁移时，若希望 `/review` 和普通子代理继承会话设置，请移除已有的 `review_model`、`agents.default_subagent_model` 与 `agents.default_subagent_reasoning_effort` 覆盖项。
 

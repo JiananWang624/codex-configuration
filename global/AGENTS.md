@@ -2,7 +2,7 @@
 
 ## Core principles
 
-Prefer the smallest correct change that fully solves the task. Use targeted searches and existing guidance, indexes, or READMEs to locate relevant context. Batch independent lookups and expand investigation, tests, or review only when the task or concrete risk warrants it.
+Prefer the smallest correct change that fully solves the task. Use targeted searches and existing guidance, indexes, or READMEs to locate relevant context. Verify the version, conditions, and evidence for documented claims that could change a decision. Keep historical findings tied to their original context. Batch independent lookups and expand investigation, tests, or review only when the task or concrete risk warrants it.
 
 Reuse existing code and dependencies. Prefer a suitable maintained upstream implementation for substantial missing functionality. Keep changes local, use established module boundaries, and split code for distinct responsibilities or actual reuse. Add abstractions, compatibility layers, retries, or extra state only for a requirement or evidenced failure. Use comments to explain why where that would be unclear.
 
@@ -17,6 +17,8 @@ Ask when a missing decision materially affects the result or when destructive, e
 ## Research correctness and resource safety
 
 Preserve scientifically material definitions and controls in research, robotics, simulation, and ML. These include algorithms, coordinate conventions, units, timing and control frequency, normalization, data splits, metrics, seeds, and experiment protocols. Make intentional changes explicit. Resolve ambiguity from project evidence and ask when a genuinely missing choice affects the scientific result.
+
+When reproducing a result, preserve the reference execution path and dependency versions that can affect the outcome. Record material deviations and assess reproduction against the original claim and its acceptance criteria.
 
 Stay within the agreed scope and budget. Obtain explicit authorization before expensive training, large simulations, multi-seed runs, sweeps, large downloads, or real-hardware actions. Small targeted tests and smoke checks may proceed within scope.
 
