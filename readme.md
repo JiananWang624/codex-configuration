@@ -2,7 +2,7 @@
 
 [English](README.en.md) | 简体中文
 
-这是一套由计算机科学与机器人方向 PhD 学生维护的个人全局 Codex 配置模板，以 GPT-6.1 Sol 为主，日常用于论文复现、实验代码开发与调试，以及小工具开发。
+本仓库集中维护个人 Codex 配置、子代理和技能，用于论文复现、实验代码开发与调试，以及小工具开发。所有改动先在这里编辑和验证，验收后再由维护者手动同步到电脑和服务器。
 
 目标是在保证代码正确性与研究可复现性的前提下，让项目结构清晰、代码与文档简洁、资料便于 agent 检索和按需读取，并通过模型分工与上下文控制减少重复工作、无关 token 和额度消耗。
 
@@ -11,6 +11,9 @@
 - [config.toml](config.toml)：主模型、推理强度、子代理并发及客户端偏好。
 - [AGENTS.md](AGENTS.md)：全局默认规则；与项目指令分层合并。
 - [agents/](agents/)：各子代理的模型与职责边界；权限继承自主会话。
+- [skills/](skills/)：个人技能目录，包含各技能的 `SKILL.md` 及附带的脚本、参考资料、模板和调用配置。
+
+四个科研技能的上游来源和许可见[第三方声明](skills/THIRD_PARTY_NOTICES.md)。
 
 ## 模型与任务分工
 
@@ -45,13 +48,13 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 复用已有记录和布局，仅在导航不足时增加索引或拆分文档，不强制模板或例行报告。细则见 [Documentation and handoff](AGENTS.md#documentation-and-handoff)。
 
-## 安装与加载检查
+## 手动同步与加载检查
 
-本仓库是模板；打开仓库不会自动将根目录的 `config.toml` 作为项目配置加载。根目录 `AGENTS.md` 会作为项目指导生效，与全局指导合并；编辑本仓库时，若它也已安装为全局文件，规则可能重复。
+打开本仓库不会自动加载根目录的 `config.toml` 和 `skills/`。根目录 `AGENTS.md` 会作为项目指导与全局指导合并；如果两份文件内容相同，规则会重复。
 
-1. **个人全局使用**：将 [config.toml](config.toml)、[AGENTS.md](AGENTS.md) 和 [agents/](agents/) 合并或复制到 Codex 用户目录（默认 `~/.codex/`，或 `CODEX_HOME` 指定位置），保留相对路径和已有个人配置。角色 TOML 会自动发现，无需逐个手动注册。将更改同步到 GitHub 不会更新已安装的本地配置；按需合并或复制所需更改，并启动新会话使其生效。
+1. **个人全局使用**：验收后，将所需的 `config.toml`、`AGENTS.md` 和 `agents/` 内容合并到各机器的 Codex 用户目录（默认 `~/.codex/`，或 `CODEX_HOME` 指定位置），保留已有的机器专用设置。把选定的技能目录完整复制到用户目录的 `skills/` 下，例如 `~/.codex/skills/research-reproduction/SKILL.md`。内置技能和插件由各客户端管理。
 2. **仅项目使用**：配置与角色文件放在受信任项目的 `.codex/` 下，项目指令放在项目根目录。具体加载顺序见[官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)。
-3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限及已加载指令。CLI 可用 `/status` 和 `/debug-config`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
+3. **检查生效情况**：启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`；IDE、桌面端以会话设置为准，命令行或宿主覆盖可能改变默认值。
 
 子代理继承主会话权限，角色文件的 `sandbox_mode` 不会建立独立沙箱；`scout` 与 `reviewer` 的只读要求属于行为约束。强制只读需在主会话设置；日常开发可选择 `workspace-write` 与 `on-request`。[官方权限说明](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls)
 

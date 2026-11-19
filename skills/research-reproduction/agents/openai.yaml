@@ -1,0 +1,6 @@
+interface:
+  display_name: "Research Reproduction"
+  short_description: "Reproduce research claims with controlled evidence"
+  default_prompt: "Use $research-reproduction to reproduce this research claim faithfully and report a bounded verdict."
+policy:
+  allow_implicit_invocation: false

@@ -2,7 +2,7 @@
 
 English | [简体中文](readme.md)
 
-A personal global Codex configuration template maintained by a PhD student in computer science and robotics. It uses GPT-6.1 Sol as the primary model for paper reproduction, experiment development and debugging, and small tools.
+This repository maintains personal Codex configuration, subagents, and skills for paper reproduction, experiment development and debugging, and small tools. Edit and validate changes here, then manually sync approved changes to workstations and servers.
 
 The goal is correct, reproducible research with clear project structure, concise code and documentation, and information agents can find and read on demand. Model specialization and focused context aim to reduce repeated work, irrelevant tokens, and usage.
 
@@ -11,6 +11,9 @@ The goal is correct, reproducible research with clear project structure, concise
 - [config.toml](config.toml): Default model, reasoning effort, subagent concurrency, and client preferences.
 - [AGENTS.md](AGENTS.md): Global baseline instructions, merged with project guidance.
 - [agents/](agents/): Each subagent's model and responsibilities; permissions are inherited from the parent session.
+- [skills/](skills/): Personal skills, with each skill's `SKILL.md` and any bundled scripts, references, templates, and invocation settings.
+
+See [third-party notices](skills/THIRD_PARTY_NOTICES.md) for the source and license of the four adapted scientific skills.
 
 ## Models and responsibilities
 
@@ -45,13 +48,13 @@ Global guidance defines organization and reading principles; projects supply pat
 
 Reuse existing records and layouts. Add indexes or split documents only when navigation requires it; no fixed template or routine reports are required. See [Documentation and handoff](AGENTS.md#documentation-and-handoff) for the authoritative rules.
 
-## Installation and verification
+## Manual sync and verification
 
-This repository is a template. Opening it does not automatically load the root `config.toml` as project settings. The root `AGENTS.md` does apply as project guidance and merges with global guidance; when editing this repository, its rules may duplicate an installed global copy.
+Opening this repository does not automatically load its root `config.toml` or `skills/`. The root `AGENTS.md` applies as project guidance and merges with global guidance, so installing the same file globally duplicates its rules while editing this repository.
 
-1. **Personal global use:** Merge or copy [config.toml](config.toml), [AGENTS.md](AGENTS.md), and [agents/](agents/) into your Codex home directory: `~/.codex/` by default, or the location set by `CODEX_HOME`. Preserve relative paths and existing personal settings. Role TOMLs are discovered automatically; no manual per-role registration is needed. Syncing changes to GitHub does not update the installed local configuration; merge or copy the desired changes and start a new session for them to take effect.
+1. **Personal global use:** After approval, merge the desired `config.toml`, `AGENTS.md`, and `agents/` settings into the Codex home of each target machine, preserving machine-specific settings. The default is `~/.codex/`, or the location set by `CODEX_HOME`. Copy each selected skill directory in full into that home's `skills/`, for example `~/.codex/skills/research-reproduction/SKILL.md`. Each client manages its own bundled skills and plugins.
 2. **Project-only use:** Place configuration and role files under the trusted project's `.codex/` directory, and project instructions at the project root. See the [configuration guide](https://learn.chatgpt.com/docs/config-file/config-basic) for loading precedence.
-3. **Verify:** Start a new session and check the model, reasoning effort, roles, permissions, and loaded instructions. Use `/status` and `/debug-config` in the CLI; check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
+3. **Verify:** Start a new session and check the model, reasoning effort, roles, permissions, instructions, and skills. Use `/status`, `/debug-config`, and `/skills` in the CLI. Check session settings in the IDE or desktop app. Command-line or host overrides can change defaults.
 
 Subagents inherit parent permissions; `sandbox_mode` in a role file does not create a separate sandbox. Read-only requirements for `scout` and `reviewer` are behavioral instructions. Enforce read-only access on the parent session; for everyday development, you can select `workspace-write` with `on-request`. See the [permissions guide](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls).
 
