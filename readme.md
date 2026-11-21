@@ -52,11 +52,11 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 
 ## 手动同步与加载检查
 
-从仓库根目录启动时，Codex 会合并本机全局指令和本仓库的维护规则。`global/AGENTS.md`、根目录的 `config.toml` 及 `skills/` 是供手动部署的源文件。
+**全局指令只使用 [global/AGENTS.md](global/AGENTS.md)。** [仓库根目录的 AGENTS.md](AGENTS.md) 只用于维护本仓库，不要把它复制到个人全局配置或其他项目。克隆或拉取 GitHub 仓库只会更新模板，不会自动更新本机 Codex 全局设置；请按下文将需要的指令、配置、角色和技能合并到本机。
 
-1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到 Codex 用户目录当前生效的全局指令文件，通常是 `AGENTS.md`。用户目录默认为 `~/.codex/`，可由 `CODEX_HOME` 指定。按需合并 `config.toml` 和 `agents/`，保留机器专用设置。将选定技能的完整目录复制到 `~/.agents/skills/` 或该机器已验证的技能目录，例如本机的 `~/.codex/skills/`。每个技能保留一份。 [技能加载位置](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
+1. **个人全局使用。** 验收后，将 `global/AGENTS.md` 合并到 Codex 用户目录当前生效的全局指令文件，通常是 `AGENTS.md`。用户目录默认为 `~/.codex/`，可由 `CODEX_HOME` 指定。按需合并 `config.toml`，保留机器专用设置。将选定的独立角色 TOML 文件从 `agents/` 复制到实际生效的 Codex 用户目录下的 `agents/`（默认 `~/.codex/agents/`），每个角色只保留一个生效文件。将选定技能的完整目录复制到 `~/.agents/skills/` 或该机器已验证的技能目录，例如本机的 `~/.codex/skills/`。每个技能保留一份。 [技能加载位置](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)
 2. **仅项目使用。** 在受信任项目中，将配置放入 `.codex/config.toml`，角色放入 `.codex/agents/`，指令放在项目根目录，技能放入 `.agents/skills/`。 [官方配置指南](https://learn.chatgpt.com/docs/config-file/config-basic)
-3. **检查生效情况。** 记录部署所用的仓库提交（`git rev-parse HEAD`），再从目标客户端启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`。IDE、桌面端查看会话设置，命令行或宿主可能覆盖默认值。
+3. **检查生效情况。** 记录部署所用的仓库提交（`git rev-parse HEAD`），再从目标客户端启动新会话，核对模型、推理强度、角色、权限、指令和技能。CLI 可用 `/status`、`/debug-config` 和 `/skills`。做一个小型冒烟测试：在刚开的会话中按名称调用自定义子代理（例如 `reviewer`），不显式指定 `config_file`，也不覆盖模型。核对实际生效的角色文件来源，以及子代理实际使用的模型和推理强度。IDE、桌面端查看会话设置，命令行或宿主可能覆盖默认值。
 
 **从旧版本迁移时**
 
