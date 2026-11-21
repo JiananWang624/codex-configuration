@@ -4,7 +4,7 @@
 
 本仓库集中维护个人 Codex 配置、子代理和技能，用于论文复现、实验代码开发与调试，以及小工具开发。所有改动先在这里编辑和验证，验收后再由维护者手动同步到电脑和服务器。
 
-目标是在保证代码正确性与研究可复现性的前提下，让项目结构清晰、代码与文档简洁、资料便于 agent 检索和按需读取，并通过模型分工与上下文控制减少重复工作、无关 token 和额度消耗。
+目标是让研究正确、可复现，同时控制日常上下文：全局指令保持简短，专题资料按需读取，用证据决定该改什么、验证到哪一步。
 
 ## 文件说明
 
@@ -13,28 +13,28 @@
 - [agents/](agents/)：各子代理的模型与职责边界；权限继承自主会话。
 - [skills/](skills/)：个人技能目录，包含各技能的 `SKILL.md` 及附带的脚本、参考资料、模板和调用配置。
 
-公开同步的技能只有 [systematic-debugging](skills/systematic-debugging/SKILL.md)、[project-hygiene](skills/project-hygiene/SKILL.md)、[project-memory](skills/project-memory/SKILL.md) 和 [create-slurm](skills/create-slurm/SKILL.md)。以 `$create-slurm` 显式调用 CREATE 技能。其他个人技能留在本机。[历史第三方声明](skills/THIRD_PARTY_NOTICES.md) 保留用于署名。
+公开同步的技能只有 [systematic-debugging](skills/systematic-debugging/SKILL.md)、[project-hygiene](skills/project-hygiene/SKILL.md)、[project-memory](skills/project-memory/SKILL.md) 和 [create-slurm](skills/create-slurm/SKILL.md)。以 `$create-slurm` 显式调用 CREATE 技能。仓库的 Git 忽略规则只允许这四个技能目录；其他个人技能和机器专用的访问细节留在本机。[历史第三方声明](skills/THIRD_PARTY_NOTICES.md) 保留用于署名。
 
 ## 模型与任务分工
 
-仓库模板以 GPT-6.1 Sol 作为 CLI 与 IDE 共用的默认值。客户端支持 GPT-6.2 Sol 时，可从模型选择器切换，或运行 `codex -m gpt-6.2-sol`。 [Codex 模型指南](https://learn.chatgpt.com/docs/models#configure-your-default-local-model)
+仓库模板为主代理请求 GPT-6.2 Sol（`gpt-6.2-sol`）。请在目标客户端的新会话确认生效：可选模型和客户端或会话覆盖可能不同。在 CLI 中可用 `codex -m gpt-6.2-sol` 显式指定。 [Codex 模型指南](https://learn.chatgpt.com/docs/models#configure-your-default-local-model)
 
 | 角色 | 模型 / 推理强度 | 职责 |
 | --- | --- | --- |
-| 主代理 | GPT-6.1 Sol / medium，Plan 模式 high | 规划、架构与科学决策、处理歧义、委派和最终验收 |
+| 主代理 | GPT-6.2 Sol / medium，Plan 模式 high | 规划、架构与科学决策、处理歧义、委派和最终验收 |
 | `scout` | GPT-6 Luna / high | 只读检索代码、配置、文档和日志，返回关键证据 |
 | `quick_implementer` | GPT-6 Luna / high | 已决定、范围明确的局部修改及针对性验证 |
 | `system_implementer` | GPT-6.1 Terra / high | 按明确契约完成较大实现与集成；发现证据与契约冲突时交回主代理 |
-| `debugger` | GPT-6.1 Sol / high | 复现非显然故障并定位根因；仅在明确委派修复时改代码 |
-| `reviewer` | GPT-6.1 Sol / high | 只读审查具体的正确性、回归或研究语义风险 |
+| `debugger` | GPT-6.2 Sol / high | 复现非显然故障并定位根因；仅在明确委派修复时改代码 |
+| `reviewer` | GPT-6.2 Sol / high | 只读审查具体的正确性、回归或研究语义风险 |
 
-未指定模型和推理强度的子代理继承主会话设置，`/review` 使用当前会话模型。命名角色使用表中的设置。Multi-Agent V2 最多同时打开两个子代理线程，不含主代理，通常只使用一个。 [子代理配置指南](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning)
+未指定模型和推理强度的子代理继承主会话设置，`/review` 使用当前会话模型。命名角色使用表中的设置。Multi-Agent V2 最多同时打开两个子代理线程，不含主代理。通常只用一个，只有任务真正独立时才用第二个；委派要有明确边界，最终验收仍由主代理负责。 [子代理配置指南](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning)
 
 Terra 承担方案、约束和验收标准已明确的实现；复杂集成可由主代理使用 Sol 完成。这是工作流默认分工，适用性与节省效果尚未经过同任务对比验证，后续按质量、返工和用量调整。[官方模型选择指南](https://developers.openai.com/api/docs/guides/model-selection)
 
 ## 科研工作流与项目记录
 
-跨项目的科研、资源和验证规则放在全局模板里，各项目用自己的 `AGENTS.md` 指向已有记录。 [全局规则模板](global/AGENTS.md)
+全局模板只放跨项目规则。项目自己的 `AGENTS.md` 指向已有记录；先看相关索引或章节，再按需查原始证据。长期事实与决策写回项目记录；只有工作确实需要跨会话接续、而现有记录不足以恢复时，才另写交接。 [全局规则模板](global/AGENTS.md)
 
 | 痛点 | 解决方式 | 对应文件 |
 | --- | --- | --- |
@@ -66,6 +66,8 @@ Terra 承担方案、约束和验收标准已明确的实现；复杂集成可�
 从旧模板迁移时，若希望 `/review` 和普通子代理继承会话设置，请移除已有的 `review_model`、`agents.default_subagent_model` 与 `agents.default_subagent_reasoning_effort` 覆盖项。
 
 子代理继承主会话权限，角色文件的 `sandbox_mode` 不会建立独立沙箱；`scout` 与 `reviewer` 的只读要求属于行为约束。强制只读需在主会话设置；日常开发可选择 `workspace-write` 与 `on-request`。[官方权限说明](https://learn.chatgpt.com/docs/agent-configuration/subagents#approvals-and-sandbox-controls)
+
+## 本机偏好与可移植性
 
 MCP、插件及本机路径在本地单独配置，桌面外观属于客户端偏好。共享模板通过 `features.prefer_mxc = true` 优先选择可用且策略允许的 MXC，并保留 `windows.sandbox = "elevated"` 作为其他 Windows 主机的选择回退；这不是命令失败后的自动重试，也不改变 Linux 的沙箱实现。[官方 Windows 沙箱指南](https://learn.chatgpt.com/docs/windows/windows-sandbox)
 

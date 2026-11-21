@@ -4,7 +4,7 @@ English | [简体中文](readme.md)
 
 This repository maintains personal Codex configuration, subagents, and skills for paper reproduction, experiment development and debugging, and small tools. Edit and validate changes here, then manually sync approved changes to workstations and servers.
 
-The goal is correct, reproducible research with clear project structure, concise code and documentation, and information agents can find and read on demand. Model specialization and focused context aim to reduce repeated work, irrelevant tokens, and usage.
+The goal is correct, reproducible research with clear project structure and minimal routine context: keep global instructions short, read topic-specific materials only when needed, and use evidence to decide what to change and how far to validate.
 
 ## Files
 
@@ -13,28 +13,28 @@ The goal is correct, reproducible research with clear project structure, concise
 - [agents/](agents/): Each subagent's model and responsibilities; permissions are inherited from the parent session.
 - [skills/](skills/): Personal skills, with each skill's `SKILL.md` and any bundled scripts, references, templates, and invocation settings.
 
-The public skills are [systematic-debugging](skills/systematic-debugging/SKILL.md), [project-hygiene](skills/project-hygiene/SKILL.md), [project-memory](skills/project-memory/SKILL.md), and [create-slurm](skills/create-slurm/SKILL.md). Invoke `$create-slurm` explicitly. Keep other personal skill folders local. [Historical third-party notices](skills/THIRD_PARTY_NOTICES.md) are retained for attribution.
+The public skills are [systematic-debugging](skills/systematic-debugging/SKILL.md), [project-hygiene](skills/project-hygiene/SKILL.md), [project-memory](skills/project-memory/SKILL.md), and [create-slurm](skills/create-slurm/SKILL.md). Invoke `$create-slurm` explicitly. The repository’s Git ignore rules allowlist those four skill folders; keep other personal skill folders and machine-specific access details local. [Historical third-party notices](skills/THIRD_PARTY_NOTICES.md) are retained for attribution.
 
 ## Models and responsibilities
 
-The template uses GPT-6.1 Sol as a shared CLI and IDE default. On clients that offer GPT-6.2 Sol, select it in the model picker or run `codex -m gpt-6.2-sol`. [Codex models](https://learn.chatgpt.com/docs/models#configure-your-default-local-model)
+The template requests GPT-6.2 Sol (`gpt-6.2-sol`) for the primary agent. Verify it in a fresh session on each target client: available models and client or session overrides can differ. To request it explicitly in the CLI, use `codex -m gpt-6.2-sol`. [Codex models](https://learn.chatgpt.com/docs/models#configure-your-default-local-model)
 
 | Role | Model / reasoning effort | Responsibility |
 | --- | --- | --- |
-| Primary agent | GPT-6.1 Sol / medium (high in Plan mode) | Planning, architectural and scientific decisions, resolving ambiguity, delegation, and final acceptance |
+| Primary agent | GPT-6.2 Sol / medium (high in Plan mode) | Planning, architectural and scientific decisions, resolving ambiguity, delegation, and final acceptance |
 | `scout` | GPT-6 Luna / high | Read-only inspection of code, configuration, documentation, and logs; return relevant evidence |
 | `quick_implementer` | GPT-6 Luna / high | Clearly scoped, already decided local changes and focused validation |
 | `system_implementer` | GPT-6.1 Terra / high | Substantial implementation and integration under a clear contract; escalate conflicts with repository evidence |
-| `debugger` | GPT-6.1 Sol / high | Reproduce non-obvious failures and establish root cause; edit code only when explicitly assigned a fix |
-| `reviewer` | GPT-6.1 Sol / high | Read-only review of specific correctness, regression, or research risks |
+| `debugger` | GPT-6.2 Sol / high | Reproduce non-obvious failures and establish root cause; edit code only when explicitly assigned a fix |
+| `reviewer` | GPT-6.2 Sol / high | Read-only review of specific correctness, regression, or research risks |
 
-Subagents inherit the session model and reasoning effort when neither is configured. `/review` uses the current session model. Named roles use the settings in the table. Multi-Agent V2 permits up to two open subagent threads, excluding the primary. Normally use one. [Subagent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning)
+Subagents inherit the session model and reasoning effort when neither is configured. `/review` uses the current session model. Named roles use the settings in the table. Multi-Agent V2 permits up to two open subagent threads, excluding the primary. Normally use one; use a second only for independent work. Give each a bounded task and keep final validation with the primary. [Subagent configuration](https://learn.chatgpt.com/docs/agent-configuration/subagents#choosing-models-and-reasoning)
 
 Terra handles implementation after the approach, constraints, and acceptance criteria are defined; the primary agent can use Sol for complex integrations. This is a workflow default, not a same-task benchmark of suitability or savings. Adjust it based on quality, rework, and usage. See the [model selection guide](https://developers.openai.com/api/docs/guides/model-selection).
 
 ## Research workflows and project records
 
-The global template holds research, resource, and validation rules that apply across projects. Each project's `AGENTS.md` points to existing records. [Global instruction template](global/AGENTS.md)
+The global template holds only cross-project rules. A project's `AGENTS.md` points to its own records; read the relevant index or section first and open raw evidence only as needed. Keep durable facts and decisions in those project records. Use a separate handoff only when work must move between sessions and those records do not already make it resumable. [Global instruction template](global/AGENTS.md)
 
 | Problem | How the configuration addresses it | Where it is defined |
 | --- | --- | --- |

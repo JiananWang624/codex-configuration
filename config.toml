@@ -3,8 +3,8 @@
 # Primary model
 # ============================================================
 
-# Shared default for the CLI and IDE. Select GPT-6.2 Sol on clients that offer it.
-model = "gpt-6.1-sol"
+# Default requested by the template; verify availability in the target client.
+model = "gpt-6.2-sol"
 model_reasoning_effort = "medium"
 
 # Keep interactive planning on the strong primary model.
