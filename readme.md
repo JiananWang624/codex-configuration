@@ -13,7 +13,7 @@
 - [agents/](agents/)：各子代理的模型与职责边界；权限继承自主会话。
 - [skills/](skills/)：个人技能目录，包含各技能的 `SKILL.md` 及附带的脚本、参考资料、模板和调用配置。
 
-四个科研技能的上游来源和许可见[第三方声明](skills/THIRD_PARTY_NOTICES.md)。
+公开同步的技能只有 [systematic-debugging](skills/systematic-debugging/SKILL.md)、[project-hygiene](skills/project-hygiene/SKILL.md)、[project-memory](skills/project-memory/SKILL.md) 和 [create-slurm](skills/create-slurm/SKILL.md)。以 `$create-slurm` 显式调用 CREATE 技能。其他个人技能留在本机。[历史第三方声明](skills/THIRD_PARTY_NOTICES.md) 保留用于署名。
 
 ## 模型与任务分工
 

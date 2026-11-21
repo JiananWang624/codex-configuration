@@ -13,7 +13,7 @@ The goal is correct, reproducible research with clear project structure, concise
 - [agents/](agents/): Each subagent's model and responsibilities; permissions are inherited from the parent session.
 - [skills/](skills/): Personal skills, with each skill's `SKILL.md` and any bundled scripts, references, templates, and invocation settings.
 
-See [third-party notices](skills/THIRD_PARTY_NOTICES.md) for the source and license of the four adapted scientific skills.
+The public skills are [systematic-debugging](skills/systematic-debugging/SKILL.md), [project-hygiene](skills/project-hygiene/SKILL.md), [project-memory](skills/project-memory/SKILL.md), and [create-slurm](skills/create-slurm/SKILL.md). Invoke `$create-slurm` explicitly. Keep other personal skill folders local. [Historical third-party notices](skills/THIRD_PARTY_NOTICES.md) are retained for attribution.
 
 ## Models and responsibilities
 

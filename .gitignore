@@ -1,0 +1,7 @@
+# Only the approved public skill packages and attribution notice are tracked.
+/skills/*
+!/skills/THIRD_PARTY_NOTICES.md
+!/skills/systematic-debugging/
+!/skills/project-hygiene/
+!/skills/project-memory/
+!/skills/create-slurm/
